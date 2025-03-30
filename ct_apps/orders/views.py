@@ -6,7 +6,23 @@ from django.views import View
 # Create your views here.
 class SaleOrdersView(View):
     def get(self, request):
-        context = {}
+        context = {
+            "sales_orders": [
+                {
+                    "id": "00123",
+                    "user": "Wes",
+                    "status":1,
+                    "has_pending_items": 1
+                },
+                {
+                    "id": "00124",
+                    "user": "Bru",
+                    "status": 1,
+                    "has_pending_items":0
+                }
+            ]
+        }
+
         return render(request, 'orders/index.html', context)
 
 

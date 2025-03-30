@@ -6,6 +6,10 @@ from django.views import View
 # Create your views here.
 class SaleOrdersView(View):
     def get(self, request):
+
+        for param in request.GET.items():
+            print(param)
+
         context = {
             "sales_orders": [
                 {
@@ -22,6 +26,12 @@ class SaleOrdersView(View):
                 }
             ]
         }
+
+        if request.GET.get('search_order_id', None):
+            print('here')
+            context['sales_orders'] = [context['sales_orders'][0]]
+
+        print(context)
 
         return render(request, 'orders/index.html', context)
 

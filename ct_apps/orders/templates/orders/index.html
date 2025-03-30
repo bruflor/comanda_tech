@@ -5,7 +5,8 @@
 {% endblock title %}
 
 {% block body %}
-    {% if user.type == "consumer" %}
-        {% include "orders/roles/consumer.html" %}
+    {% if user.type == "staff" %}
+        {% include "orders/roles/staff.html" %}
     {% endif %}
+
 {% endblock body %}

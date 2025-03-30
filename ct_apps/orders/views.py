@@ -15,14 +15,14 @@ class SaleOrdersView(View):
                 {
                     "id": "00123",
                     "user": "Wes",
-                    "status":1,
+                    "status": 1,
                     "has_pending_items": 1
                 },
                 {
                     "id": "00124",
                     "user": "Bru",
                     "status": 1,
-                    "has_pending_items":0
+                    "has_pending_items": 0
                 }
             ]
         }
@@ -56,7 +56,7 @@ class SaleOrdersDetailView(View):
                 },
                 {
                     "id": "34567",
-                    "amount": 3,
+                    "amount": 352,
                     "name": 'Sagu',
                     "price": 1.50
                 },
@@ -75,4 +75,52 @@ class SaleOrdersDetailView(View):
                 }
             ]
         }
-        return render(request, 'orders/roles/consumer.html', context)
+        return render(request, 'orders/sales_order/index.html', context)
+
+
+class SaleOrdersDetailEditingView(View):
+    def get(self, request, id, is_editing, *args, **kwargs):
+        context = {
+            "id": "00123",
+            "user": "Wes",
+            "purchased_items": [
+                {
+                    "id": "123456",
+                    "amount": 3,
+                    "name": 'Feijoada',
+                    "price": 10.00
+                },
+                {
+                    "id": "234567",
+                    "amount": 5,
+                    "name": 'Cocola',
+                    "price": 1.00
+                },
+                {
+                    "id": "34567",
+                    "amount": 3,
+                    "name": 'Sagu',
+                    "price": 1.50
+                },
+                {
+                    "id": "4567",
+                    "amount": 365,
+                    "name": 'Canjica',
+                    "price": 0.80
+                }
+            ],
+            "retrieved_items": [
+                {
+                    "id": "#4567",
+                    "name": 'Canjica',
+                    "timestamp": "date-time"
+                }
+            ]
+        }
+
+        return render(request, 'orders/sales_order/editing.html', context)
+
+    def post(self, request, id, is_editing ):
+        print(request.POST.get("body"))
+        return HttpResponse('success')
+

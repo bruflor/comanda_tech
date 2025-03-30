@@ -38,7 +38,7 @@
 <div class="mt-4">
     {% for sales_order in sales_orders %}
         {% if sales_order.status %}
-            <a href="{% url "orders:detail" id=sales_order.id %}" class="card m-3 p-3"
+            <a href="{% url "orders:detail_edit" id=sales_order.id is_editing=True %}" class="card m-3 p-3"
                style="border-left: 8px solid {% if sales_order.has_pending_items %}#0f0{% else %}#aaa{% endif %}">
                 {{ sales_order.id }}
                 {{ sales_order.user }}

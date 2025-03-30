@@ -1,0 +1,66 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block title %}
+    <title>{{ id }} - Editing</title>
+{% endblock title %}
+
+{% block body %}
+    <form method="post" action="{% url "orders:detail_edit" id=id is_editing=True %}">
+        <div class="container-fluid">
+            <h1 class="mb-5">Edição de comanda</h1>
+
+            <div class="mb-4">
+                <h2><small class="text-muted">Nº:</small> {{ id }}</h2>
+                <h3><small class="text-muted">Nome:</small> {{ user }}</h3>
+            </div>
+
+            <div>
+                <h2 class="mt-5 mb-4">Itens</h2>
+                <ul class="m-3 p-0">
+                    {% for item in purchased_items %}
+                        <li class="row mt-3">
+                                <div class="card">
+                                    <div class="card-body row d-flex align-items-center">
+                                        <div class="col-8 d-flex gap-2  align-items-center">
+                                            {# todo: create an after pseudolement here to place som X #}
+                                            <input id="{{ item.id }}" type="number" min="0" value="{{ item.amount }}" style="border:none; width: 100%;font-size:1.8rem; text-align: center">
+                                            <span class="mb-0 w-100 p-0"> {{ item.name }}</span>
+                                            <span class="mb-0 w-100 p-0">{{ item.price }} $</span>
+                                        </div>
+
+                                        <div class="col-4 d-flex gap-3">
+                                            <button type="button" onclick="handleChangeInputValue('{{ item.id }}', 'remove' )" class="btn btn-warning" style="font-size:1.8rem;line-height:100%;">-</button>
+                                            <button type="button" onclick="handleChangeInputValue('{{ item.id }}', 'add' )" class="btn btn-success" style="font-size:1.8rem;line-height:100%;">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
+                <button type="reset" class="btn btn-outline-danger w-50">Voltar</button>
+                <button type="submit" class="btn btn-primary w-50">Salvar</button>
+            </div>
+
+            <div class="p-3 pt-4 mt-4" style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
+                <h2 class="mb-4 mt-0">Histórico</h2>
+                <ul style="padding: 0">
+                    {% for item in retrieved_items %}
+                        <li class="row mt-3">
+                            <div class="col">
+                                <div class="d-flex gap-3 justify-content-between">
+                                    <p class="mb-0">{{ item.name }} </p>
+                                    <p class="mb-0"> {{ item.timestamp }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </form>
+    <script src="{% static "js/order_static.js" %}"></script>
+{% endblock body %}

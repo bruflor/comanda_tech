@@ -7,6 +7,7 @@
 
 {% block body %}
     <form method="post" action="{% url "orders:detail_edit" id=id is_editing=True %}">
+        {% csrf_token %}
         <div class="container-fluid">
             <h1 class="mb-5">Edição de comanda</h1>
 
@@ -24,7 +25,14 @@
                                     <div class="card-body row d-flex align-items-center">
                                         <div class="col-8 d-flex gap-2  align-items-center">
                                             {# todo: create an after pseudolement here to place som X #}
-                                            <input id="{{ item.id }}" type="number" min="0" value="{{ item.amount }}" style="border:none; width: 100%;font-size:1.8rem; text-align: center">
+                                            <input
+                                                    disabled
+                                                    id="{{ item.id }}"
+                                                    name="{{ item.id }}"
+                                                    type="number"
+                                                    min="0"
+                                                    value="{{ item.amount }}"
+                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center">
                                             <span class="mb-0 w-100 p-0"> {{ item.name }}</span>
                                             <span class="mb-0 w-100 p-0">{{ item.price }} $</span>
                                         </div>

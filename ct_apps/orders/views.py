@@ -120,7 +120,53 @@ class SaleOrdersDetailEditingView(View):
 
         return render(request, 'orders/sales_order/editing.html', context)
 
-    def post(self, request, id, is_editing ):
-        print(request.POST.get("body"))
-        return HttpResponse('success')
+    def post(self, request, id, is_editing):
+        context = {
+            "id": "00123",
+            "user": "Wes",
+            "purchased_items": [
+                {
+                    "id": "123456",
+                    "amount": 3,
+                    "name": 'Feijoada',
+                    "price": 10.00
+                },
+                {
+                    "id": "234567",
+                    "amount": 5,
+                    "name": 'Cocola',
+                    "price": 1.00
+                },
+                {
+                    "id": "34567",
+                    "amount": 352,
+                    "name": 'Sagu',
+                    "price": 1.50
+                },
+                {
+                    "id": "4567",
+                    "amount": 3,
+                    "name": 'Canjica',
+                    "price": 0.80
+                }
+            ],
+            "retrieved_items": [
+                {
+                    "id": "#4567",
+                    "name": 'Canjica',
+                    "timestamp": "date-time"
+                }
+            ]
+        }
+
+        pi = []
+        for item in request.POST.items():
+            for x in context['purchased_items']:
+                print(item[0], item[1])
+                x[item[0]] = item[1]
+                pi.append(x)
+
+        context['purchased_items'] = pi
+
+        return render(request, 'orders/sales_order/editing.html', context)
 

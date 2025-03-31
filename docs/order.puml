@@ -1,0 +1,99 @@
+@startuml
+
+class OrderSale{
+    id:int
+    consumer: string
+    purchased_items: list<OrderedItem>
+}
+
+class OrderedItem {
+    id: int
+    item: Product
+    order: OrderSale
+    amount: int
+}
+
+class Product {
+    id: int
+    name: string
+    price_to_sell: double
+    cost_price: double
+    stock_amount: int
+    status: string
+    sell(amount):
+    deliver(amount):
+}
+
+OrderSale "0..* " --- "0..* " OrderedItem : " contains"
+OrderedItem "0..* " --- "0..* " Product : " contains"
+
+object Feijoada <<Product>>{
+    id:1
+    name: "Refeição feijoada"
+    price_to_sell: 10
+    cost_price: 0
+    stock_amount: 100
+    status: available
+}
+
+object Cocacola <<Product>>{
+    id:1
+    name: "Coca-cola"
+    price_to_sell: .8
+    cost_price: .6
+    stock_amount: 100
+    status: available
+}
+
+object Consumer_wes <<OrderSale>> {
+    id: 1
+    consumer: "Wes"
+    purchased_items: [OrderItem1, OrderItem2] 
+}
+
+object OrderedItem1 <<OrderedItem>> {
+    id: int
+    item: Feijoada
+    order: Consumer_wes
+    amount: 3
+}
+
+object OrderedItem2 <<OrderedItem>> {
+    id: int
+    item: Cocacola
+    order: Consumer_wes
+    amount: 6
+}
+
+Consumer_wes -- OrderedItem1
+Consumer_wes -- OrderedItem2
+
+object Consumer_bru <<OrderSale>> {
+    id:2
+    consumer: "Bru"
+    purchased_items: [OrderItem3, OrderItem4]]
+}
+
+object OrderedItem3 <<OrderedItem>> {
+    id: 3
+    item: Feijoada
+    order: Consumer_bru
+    amount: 3
+}
+
+object OrderedItem4 <<OrderedItem>> {
+    id: 4
+    item: Cocacola
+    order: Consumer_bru
+    amount: 6
+}
+
+Consumer_bru -- OrderedItem3
+Consumer_bru -- OrderedItem4
+
+OrderedItem1 -- Feijoada
+OrderedItem2 -- Cocacola
+OrderedItem3 -- Feijoada
+OrderedItem4 -- Cocacola
+
+@enduml

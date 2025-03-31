@@ -161,10 +161,12 @@ class SaleOrdersDetailEditingView(View):
 
         pi = []
         for item in request.POST.items():
+            item_to_append = {}
             for x in context['purchased_items']:
-                print(item[0], item[1])
                 x[item[0]] = item[1]
-                pi.append(x)
+                item_to_append = x
+
+            pi.append(item_to_append)
 
         context['purchased_items'] = pi
 

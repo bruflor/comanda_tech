@@ -6,20 +6,20 @@
 {% endblock title %}
 
 {% block body %}
-    <form method="post" action="{% url "orders:detail_edit" id=id is_editing=True %}">
+    <form method="post" action="{% url "orders:detail_edit" reference=order_sale.reference is_editing=True %}">
         {% csrf_token %}
         <div class="container-fluid">
             <h1 class="mb-5">Edição de comanda</h1>
 
             <div class="mb-4">
-                <h2><small class="text-muted">Nº:</small> {{ id }}</h2>
-                <h3><small class="text-muted">Nome:</small> {{ user }}</h3>
+                <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
+                <h3><small class="text-muted">Nome:</small> {{ order_sale.consumer }}</h3>
             </div>
 
             <div>
                 <h2 class="mt-5 mb-4">Itens</h2>
                 <ul class="m-3 p-0">
-                    {% for item in purchased_items %}
+                    {% for order in purchased_items %}
                         <li class="row mt-3">
                                 <div class="card">
                                     <div class="card-body row d-flex align-items-center">
@@ -27,19 +27,19 @@
                                             {# todo: create an after pseudolement here to place som X #}
                                             <input
                                                     disabled
-                                                    id="{{ item.id }}"
-                                                    name="{{ item.id }}"
+                                                    id="{{ order.id }}"
+                                                    name="{{ order.id }}"
                                                     type="number"
                                                     min="0"
-                                                    value="{{ item.amount }}"
+                                                    value="{{ order.amount }}"
                                                     style="border:none; width: 100%;font-size:1.8rem; text-align: center">
-                                            <span class="mb-0 w-100 p-0"> {{ item.name }}</span>
-                                            <span class="mb-0 w-100 p-0">{{ item.price }} $</span>
+                                            <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                            <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
                                         </div>
 
                                         <div class="col-4 d-flex gap-3">
-                                            <button type="button" onclick="handleChangeInputValue('{{ item.id }}', 'remove' )" class="btn btn-warning" style="font-size:1.8rem;line-height:100%;">-</button>
-                                            <button type="button" onclick="handleChangeInputValue('{{ item.id }}', 'add' )" class="btn btn-success" style="font-size:1.8rem;line-height:100%;">+</button>
+                                            <button type="button" onclick="handleChangeInputValue('{{ order.id }}', 'remove' )" class="btn btn-warning" style="font-size:1.8rem;line-height:100%;">-</button>
+                                            <button type="button" onclick="handleChangeInputValue('{{ order.id }}', 'add' )" class="btn btn-success" style="font-size:1.8rem;line-height:100%;">+</button>
                                         </div>
                                     </div>
                                 </div>

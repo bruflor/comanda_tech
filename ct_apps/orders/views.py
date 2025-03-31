@@ -1,31 +1,37 @@
-from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
+
+from ct_apps.orders.models import OrderSale
 
 
 # Create your views here.
 class SaleOrdersView(View):
     def get(self, request):
 
+        sale_order = OrderSale.objects.all()
+
         for param in request.GET.items():
             print(param)
 
         context = {
-            "sales_orders": [
-                {
-                    "id": "00123",
-                    "user": "Wes",
-                    "status": 1,
-                    "has_pending_items": 1
-                },
-                {
-                    "id": "00124",
-                    "user": "Bru",
-                    "status": 1,
-                    "has_pending_items": 0
-                }
-            ]
+            "sale_order": [so for so in sale_order]
         }
+        #     {
+        #     "sales_orders": [
+        #         {
+        #             "id": "00123",
+        #             "user": "Wes",
+        #             "status": 1,
+        #             "has_pending_items": 1
+        #         },
+        #         {
+        #             "id": "00124",
+        #             "user": "Bru",
+        #             "status": 1,
+        #             "has_pending_items": 0
+        #         }
+        #     ]
+        # }
 
         if request.GET.get('search_order_id', None):
             print('here')
@@ -171,4 +177,3 @@ class SaleOrdersDetailEditingView(View):
         context['purchased_items'] = pi
 
         return render(request, 'orders/sales_order/editing.html', context)
-

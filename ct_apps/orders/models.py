@@ -4,6 +4,7 @@ from django.db import models
 # Create your models here.
 class OrderSale(models.Model):
     consumer = models.CharField(max_length=200, default="", null=True, blank=True)
+    reference = models.CharField(max_length=200, default="")
     
     def __str__(self):
         return f"{self.consumer}"

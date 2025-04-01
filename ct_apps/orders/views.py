@@ -69,36 +69,22 @@ class SaleOrdersDetailEditingView(View):
 
         return render(request, 'orders/sales_order/editing.html', context)
 
-    def post(self, request, id, is_editing):
+    def post(self, request, reference, is_editing):
+        order_sale = OrderSale.objects.get(reference=reference)
+        purchased_item = order_sale.purchased_item
+        
+        for k,v in request.POST.items():
+            # print(k,v)
+            if k != "csrfmiddlewaretoken":
+                item = purchased_item.get(item_id=k)
+                item.amount=v
+                item.save()
+
+
+
         context = {
-            "id": "00123",
-            "user": "Wes",
-            "purchased_items": [
-                {
-                    "id": "123456",
-                    "amount": 3,
-                    "name": 'Feijoada',
-                    "price": 10.00
-                },
-                {
-                    "id": "234567",
-                    "amount": 5,
-                    "name": 'Cocola',
-                    "price": 1.00
-                },
-                {
-                    "id": "34567",
-                    "amount": 352,
-                    "name": 'Sagu',
-                    "price": 1.50
-                },
-                {
-                    "id": "4567",
-                    "amount": 3,
-                    "name": 'Canjica',
-                    "price": 0.80
-                }
-            ],
+            "order_sale": order_sale,
+            "purchased_items": purchased_item.all(),
             "retrieved_items": [
                 {
                     "id": "#4567",
@@ -108,15 +94,15 @@ class SaleOrdersDetailEditingView(View):
             ]
         }
 
-        pi = []
-        for item in request.POST.items():
-            item_to_append = {}
-            for x in context['purchased_items']:
-                x[item[0]] = item[1]
-                item_to_append = x
-
-            pi.append(item_to_append)
-
-        context['purchased_items'] = pi
+        # pi = []
+        # for item in request.POST.items():
+        #     item_to_append = {}
+        #     for x in context['purchased_items']:
+        #         x[item[0]] = item[1]
+        #         item_to_append = x
+        # 
+        #     pi.append(item_to_append)
+        # 
+        # context['purchased_items'] = pi
 
         return render(request, 'orders/sales_order/editing.html', context)

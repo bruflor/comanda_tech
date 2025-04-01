@@ -26,7 +26,6 @@
                                         <div class="col-8 d-flex gap-2  align-items-center">
                                             {# todo: create an after pseudolement here to place som X #}
                                             <input
-                                                    disabled
                                                     id="{{ order.id }}"
                                                     name="{{ order.id }}"
                                                     type="number"
@@ -39,7 +38,7 @@
 
                                         <div class="col-4 d-flex gap-3">
                                             <button type="button" onclick="handleChangeInputValue('{{ order.id }}', 'remove' )" class="btn btn-warning" style="font-size:1.8rem;line-height:100%;">-</button>
-                                            <button type="button" onclick="handleChangeInputValue('{{ order.id }}', 'add' )" class="btn btn-success" style="font-size:1.8rem;line-height:100%;">+</button>
+{#                                            <button type="button" onclick="handleChangeInputValue('{{ order.id }}', 'add' )" class="btn btn-success" style="font-size:1.8rem;line-height:100%;">+</button>#}
                                         </div>
                                     </div>
                                 </div>

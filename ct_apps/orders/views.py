@@ -93,15 +93,9 @@ class SaleOrdersDetailEditingView(View):
             ]
         }
 
-        # pi = []
-        # for item in request.POST.items():
-        #     item_to_append = {}
-        #     for x in context['purchased_items']:
-        #         x[item[0]] = item[1]
-        #         item_to_append = x
-        # 
-        #     pi.append(item_to_append)
-        # 
-        # context['purchased_items'] = pi
-
         return render(request, 'orders/sales_order/editing.html', context)
+
+
+class SaleOrderAddView(View):
+    def get(self, request):
+        return render(request, 'orders/sales_order/adding.html')

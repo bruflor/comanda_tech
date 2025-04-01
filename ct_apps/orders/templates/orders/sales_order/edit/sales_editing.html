@@ -1,0 +1,108 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block title %}
+    <title>{{ id }} - Editing</title>
+{% endblock title %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <form method="post"
+                      action="{% url "orders:detail_edit_sales" reference=order_sale.reference is_editing=True is_sales=True %}">
+                    {% csrf_token %}
+                    <div class="p-4  bg-white">
+                        <h2 class="mb-5">Edição de comanda</h2>
+
+                        <div class="mb-4">
+                            <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
+                            <h3><small class="text-muted">Nome:</small> {{ order_sale.consumer }}</h3>
+                        </div>
+
+                        <div>
+                            <h2 class="mt-5 mb-4">Itens</h2>
+                            <ul class="m-3 p-0">
+                                {% for order in purchased_items %}
+                                    <li class="row mt-3">
+                                        <div class="card">
+                                            <div class="card-body row d-flex align-items-center">
+                                                <div class="col-8 d-flex gap-2  align-items-center">
+                                                    {# todo: create an after pseudolement here to place som X #}
+                                                    <input
+                                                            id="{{ order.id }}"
+                                                            name="{{ order.id }}"
+                                                            type="number"
+                                                            min="0"
+                                                            value="{{ order.amount }}"
+                                                            style="border:none; width: 100%;font-size:1.8rem; text-align: center">
+                                                    <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                                    <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
+                                                </div>
+
+                                                <div class="col-4 d-flex gap-3">
+                                                    <button type="button"
+                                                            onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"
+                                                            class="btn btn-warning"
+                                                            style="font-size:1.8rem;line-height:100%;">-
+                                                    </button>
+                                                    <button type="button"
+                                                            onclick="handleChangeInputValue('{{ order.id }}', 'add' )"
+                                                            class="btn btn-success"
+                                                            style="font-size:1.8rem;line-height:100%;">+
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
+                            <button type="reset" class="btn btn-outline-danger w-50">Voltar</button>
+                            <button type="submit" class="btn btn-primary w-50">Salvar</button>
+                        </div>
+
+                        <div class="p-3 pt-4 mt-4"
+                             style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
+                            <h2 class="mb-4 mt-0">Histórico</h2>
+                            <ul style="padding: 0">
+                                {% for item in retrieved_items %}
+                                    <li class="row mt-3">
+                                        <div class="col">
+                                            <div class="d-flex gap-3 justify-content-between">
+                                                <p class="mb-0">{{ item.name }} </p>
+                                                <p class="mb-0"> {{ item.timestamp }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-6  flex-1">
+                <div class="bg-white col">
+                    <h2>available items</h2>
+                    <form method="post"                       action="{% url "orders:detail_edit_sales_add" %}">
+
+                    {% csrf_token %}
+                        <input hidden id="order" name="reference" value="{{ order_sale.reference }}"/>
+                        <select name="item_id">
+                            <option value="1">Feijoada</option>
+                            <option value="2">Cocola</option>
+                        </select>
+{#                        <label for="amount">Amount</label>#}
+{#                        <input name="amount" type="number" id="amount"/>#}
+                        <button>Submit</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static "js/order_static.js" %}"></script>
+{% endblock body %}

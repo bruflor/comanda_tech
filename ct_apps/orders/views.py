@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 
-from ct_apps.orders.models import OrderSale
+from ct_apps.orders.models import OrderSale, OrderItem
 
 
 # Create your views here.
@@ -31,8 +31,6 @@ class SaleOrdersDetailView(View):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
 
-
-
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item,
@@ -48,12 +46,10 @@ class SaleOrdersDetailView(View):
 
 
 class SaleOrdersDetailEditingView(View):
-    def get(self, request, reference, is_editing, *args, **kwargs):
+    def get(self, request, reference, is_editing, is_sales=None, *args, **kwargs):
 
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
-
-
 
         context = {
             "order_sale": order_sale,
@@ -67,19 +63,46 @@ class SaleOrdersDetailEditingView(View):
             ]
         }
 
-        return render(request, 'orders/sales_order/editing.html', context)
+        if is_sales:
+            return render(request, "orders/sales_order/edit/sales_editing.html", context)
+        return render(request, 'orders/sales_order/edit/staff_editing.html', context)
 
-    def post(self, request, reference, is_editing):
+    def post(self, request, reference, is_editing, is_sales=None):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item
-        
-        for k,v in request.POST.items():
+
+        for k, v in request.POST.items():
             if k != "csrfmiddlewaretoken":
                 order_item = purchased_item.get(pk=k)
                 order_item.amount = v
                 order_item.save()
 
+        context = {
+            "order_sale": order_sale,
+            "purchased_items": purchased_item.all(),
+            "retrieved_items": [
+                {
+                    "id": "#4567",
+                    "name": 'Canjica',
+                    "timestamp": "date-time"
+                }
+            ]
+        }
+        if is_sales:
+            return render(request, "orders/sales_order/edit/sales_editing.html", context)
+        return render(request, 'orders/sales_order/edit/staff_editing.html', context)
 
+
+class SaleOrderAddView(View):
+    def post(self, request):
+        reference = request.POST.get("reference", None)
+        item_id = request.POST.get("item_id", None)
+
+        order_sale = OrderSale.objects.get(reference=reference)
+        purchased_item = order_sale.purchased_item
+
+        order_item = OrderItem(item_id=item_id, order=order_sale, amount=0)
+        order_item.save()
 
         context = {
             "order_sale": order_sale,
@@ -93,9 +116,4 @@ class SaleOrdersDetailEditingView(View):
             ]
         }
 
-        return render(request, 'orders/sales_order/editing.html', context)
-
-
-class SaleOrderAddView(View):
-    def get(self, request):
-        return render(request, 'orders/sales_order/adding.html')
+        return render(request, "orders/sales_order/edit/sales_editing.html", context)

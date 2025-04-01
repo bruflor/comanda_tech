@@ -74,11 +74,10 @@ class SaleOrdersDetailEditingView(View):
         purchased_item = order_sale.purchased_item
         
         for k,v in request.POST.items():
-            # print(k,v)
             if k != "csrfmiddlewaretoken":
-                item = purchased_item.get(item_id=k)
-                item.amount=v
-                item.save()
+                order_item = purchased_item.get(pk=k)
+                order_item.amount = v
+                order_item.save()
 
 
 

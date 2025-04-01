@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 
+from ct_apps.orders.forms import ProductForm
 from ct_apps.orders.models import OrderSale, OrderItem
 
 
@@ -51,6 +52,8 @@ class SaleOrdersDetailEditingView(View):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
 
+        product_form = ProductForm()
+
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item,
@@ -60,7 +63,8 @@ class SaleOrdersDetailEditingView(View):
                     "name": 'Canjica',
                     "timestamp": "date-time"
                 }
-            ]
+            ],
+            "product_form": product_form
         }
 
         if is_sales:
@@ -70,6 +74,8 @@ class SaleOrdersDetailEditingView(View):
     def post(self, request, reference, is_editing, is_sales=None):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item
+
+        product_form = ProductForm()
 
         for k, v in request.POST.items():
             if k != "csrfmiddlewaretoken":
@@ -86,7 +92,8 @@ class SaleOrdersDetailEditingView(View):
                     "name": 'Canjica',
                     "timestamp": "date-time"
                 }
-            ]
+            ],
+            "product_form": product_form
         }
         if is_sales:
             return render(request, "orders/sales_order/edit/sales_editing.html", context)
@@ -104,6 +111,8 @@ class SaleOrderAddView(View):
         order_item = OrderItem(item_id=item_id, order=order_sale, amount=0)
         order_item.save()
 
+        product_form = ProductForm()
+
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item.all(),
@@ -113,7 +122,8 @@ class SaleOrderAddView(View):
                     "name": 'Canjica',
                     "timestamp": "date-time"
                 }
-            ]
+            ],
+            "product_form": product_form
         }
 
         return render(request, "orders/sales_order/edit/sales_editing.html", context)

@@ -86,20 +86,26 @@
             <div class="col-6  flex-1">
                 <div class="bg-white col">
                     <h2>available items</h2>
-                    <form method="post"                       action="{% url "orders:detail_edit_sales_add" %}">
 
-                    {% csrf_token %}
+
+                    <form method="post" action="{% url "orders:detail_edit_sales_add" %}">
+
+                        {% csrf_token %}
                         <input hidden id="order" name="reference" value="{{ order_sale.reference }}"/>
                         <select name="item_id">
-                            <option value="1">Feijoada</option>
-                            <option value="2">Cocola</option>
+                            {% for product in product_form %}
+                                {% for choice in product.field.choices %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
+                                        Estoque: {{ choice.3 }}</option>
+                                {% endfor %}
+                            {% endfor %}
                         </select>
-{#                        <label for="amount">Amount</label>#}
-{#                        <input name="amount" type="number" id="amount"/>#}
+                        {#                        <label for="amount">Amount</label>#}
+                        {#                        <input name="amount" type="number" id="amount"/>#}
                         <button>Submit</button>
                     </form>
                 </div>
-                
+
             </div>
         </div>
     </div>

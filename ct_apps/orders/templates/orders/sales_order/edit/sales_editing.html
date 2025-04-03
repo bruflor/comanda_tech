@@ -6,13 +6,41 @@
 {% endblock title %}
 
 {% block body %}
-    <div class="container-fluid">
+    <div class="container-fluid p-5">
+
+        <div class="row mb-5">
+            <div class="col-12  flex-1">
+                <div class="container-fluid bg-white p-4" style="border-radius: 8px;">
+                    <h2>Itens disponíveis</h2>
+                    <form method="post" action="{% url "orders:detail_edit_sales_add" %}">
+                        <div class="row flex-no-wrap px-3 align-items-center mt-4">
+                            {% csrf_token %}
+                            <input hidden id="order" name="reference" value="{{ order_sale.reference }}"/>
+                            <div class="col-9">
+                                <select name="item_id" class="p-3 w-100">
+                                    {% for product in product_form %}
+                                        {% for choice in product.field.choices %}
+                                            <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
+                                                Estoque: {{ choice.3 }}</option>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <button class="w-100 btn btn-primary p-3 justify-self-end">Adicionar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <form method="post"
                       action="{% url "orders:detail_edit_sales" reference=order_sale.reference is_editing=True is_sales=True %}">
                     {% csrf_token %}
-                    <div class="p-4  bg-white">
+                    <div class="p-4  bg-white" style="border-radius: 8px;">
                         <h2 class="mb-5">Edição de comanda</h2>
 
                         <div class="mb-4">
@@ -64,50 +92,31 @@
                             <button type="submit" class="btn btn-primary w-50">Salvar</button>
                         </div>
 
-                        <div class="p-3 pt-4 mt-4"
-                             style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
-                            <h2 class="mb-4 mt-0">Histórico</h2>
-                            <ul style="padding: 0">
-                                {% for item in retrieved_items %}
-                                    <li class="row mt-3">
-                                        <div class="col">
-                                            <div class="d-flex gap-3 justify-content-between">
-                                                <p class="mb-0">{{ item.name }} </p>
-                                                <p class="mb-0"> {{ item.timestamp }}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+
                     </div>
                 </form>
             </div>
-            <div class="col-6  flex-1">
-                <div class="bg-white col">
-                    <h2>available items</h2>
+        </div>
 
-
-                    <form method="post" action="{% url "orders:detail_edit_sales_add" %}">
-
-                        {% csrf_token %}
-                        <input hidden id="order" name="reference" value="{{ order_sale.reference }}"/>
-                        <select name="item_id">
-                            {% for product in product_form %}
-                                {% for choice in product.field.choices %}
-                                    <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
-                                        Estoque: {{ choice.3 }}</option>
-                                {% endfor %}
-                            {% endfor %}
-                        </select>
-                        {#                        <label for="amount">Amount</label>#}
-                        {#                        <input name="amount" type="number" id="amount"/>#}
-                        <button>Submit</button>
-                    </form>
-                </div>
-
+        <div class="container-fluid bg-white p-4 mt-4" style="border-radius: 8px">
+            <h2 class="mb-4 mt-0">Histórico</h2>
+            <div class="p-3 pt-4 mt-4"
+                 style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
+                <ul style="padding: 0">
+                    {% for item in retrieved_items %}
+                        <li class="row mt-3">
+                            <div class="col">
+                                <div class="d-flex gap-3 justify-content-between">
+                                    <p class="mb-0">{{ item.name }} </p>
+                                    <p class="mb-0"> {{ item.timestamp }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
+
     </div>
 
     <script src="{% static "js/order_static.js" %}"></script>

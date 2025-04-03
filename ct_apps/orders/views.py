@@ -80,6 +80,8 @@ class SaleOrdersDetailEditingView(View):
         for k, v in request.POST.items():
             if k != "csrfmiddlewaretoken":
                 order_item = purchased_item.get(pk=k)
+                if order_item.amount == 0:
+                    order_item
                 order_item.amount = v
                 order_item.save()
 
@@ -108,7 +110,7 @@ class SaleOrderAddView(View):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item
 
-        order_item = OrderItem(item_id=item_id, order=order_sale, amount=0)
+        order_item = OrderItem(item_id=item_id, order=order_sale, amount=1)
         order_item.save()
 
         product_form = ProductForm()

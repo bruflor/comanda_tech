@@ -1,15 +1,26 @@
 function handleChangeInputValue(inputId, type) {
     const element = document.getElementById(inputId)
+    const btnChangeStatus = document.getElementById(`change-status_${inputId}`)
+
     if (type === 'add') {
-        element.value = Number(element.value) + 1
+        element.value = "to_pay"
         element.dispatchEvent(new Event("change"))
-        console.log('increasing', element.value)
+        btnChangeStatus.onclick = () => handleChangeInputValue(element.id, 'remove')
+        btnChangeStatus.innerText = "Remover"
+        btnChangeStatus.classList.add("btn-outline-danger")
+        btnChangeStatus.classList.remove("btn-outline-success")
+        console.log('to pay')
     }
+
     if (type === 'remove') {
-        if (Number(element.value) === 0) return
-        element.value = Number(element.value) - 1
+        element.value = "to_remove"
         element.dispatchEvent(new Event("change"))
-        console.log('decreasing', element.value)
+        btnChangeStatus.onclick = () => handleChangeInputValue(element.id, 'add')
+        btnChangeStatus.innerText = "Adicionar"
+        btnChangeStatus.classList.add("btn-outline-success")
+        btnChangeStatus.classList.remove("btn-outline-danger")
+
+        console.log('to remove')
     }
 
     if (type === 'deliver') {
@@ -37,7 +48,7 @@ const calcPay = () => {
 
         totalDebit.push(totalPerItem)
         // itemStatus.value = "paid"
-        
+
 
     }
     console.debug('changing')

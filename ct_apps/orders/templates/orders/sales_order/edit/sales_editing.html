@@ -84,20 +84,13 @@
                                         </div>
 
                                         <div class="col-auto d-flex gap-3 justify-self-end">
-{#                                            <button type="button"#}
-{#                                                    onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"#}
-{#                                                    class="btn btn-warning"#}
-{#                                                    style="font-size:1.8rem;line-height:100%;">-#}
-{#                                            </button>#}
-{#                                            <button type="button"#}
-{#                                                    onclick="handleChangeInputValue('{{ order.id }}', 'add' )"#}
-{#                                                    class="btn btn-success"#}
-{#                                                    style="font-size:1.8rem;line-height:100%;">+#}
-{#                                            </button>#}
-
                                             <button type="button"
+                                                    id="change-status_{{ order.id }}"
                                                     class="btn btn-outline-danger"
-                                                    style="font-size:1.8rem;line-height:100%;">Remover
+                                                    style="font-size:1.8rem;line-height:100%;"
+                                                    onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"
+                                            >Remover
+                                                
                                             </button>
                                         </div>
                                     </div>

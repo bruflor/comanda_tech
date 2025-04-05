@@ -6,6 +6,7 @@
 {% endblock title %}
 
 {% block body %}
+    <script src="{% static "js/order_static.js" %}"></script>
     <a href="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}">Editar</a>
 
     <form method="post" action="{% url "orders:detail_retrieve" reference=order_sale.reference is_editing=True %}">
@@ -79,5 +80,4 @@
             </div>
         </div>
     </form>
-    <script src="{% static "js/order_static.js" %}"></script>
 {% endblock body %}

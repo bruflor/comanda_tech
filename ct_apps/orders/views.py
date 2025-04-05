@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.views import View
 
@@ -110,8 +109,14 @@ class SaleOrdersDetailEditingView(View):
                     else:
                         # TODO: adding payment to the cashflow
                         # TODO: Remove items from inventory
+                        for item in purchased_item:
+                            if request.POST.get(f'status_{item.id}'):
+                                item.status = 'paid'
+                                item.save()
+
+
                         print('adding payment to the cashflow', float(v))
-                        
+
                         is_sales = False
 
         context = {

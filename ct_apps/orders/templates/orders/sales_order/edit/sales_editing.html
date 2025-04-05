@@ -6,6 +6,7 @@
 {% endblock title %}
 
 {% block body %}
+    <script src="{% static "js/order_static.js" %}"></script>
     <div class="container-fluid p-5">
 
         <div class="mb-5">
@@ -73,28 +74,26 @@
                                             <span class="mb-0 w-100 p-0"
                                                   data-item-price>{{ order.item.price }}</span><span> $</span>
                                             </div>
-{#                                            <input#}
-{#                                                    id="{{ order.id }}"#}
-{#                                                    name="{{ order.id }}"#}
-{#                                                    type="number"#}
-{#                                                    min="0"#}
-{#                                                    value="{{ order.amount }}"#}
-{#                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center"#}
-{#                                                    onchange="calcPay()">#}
+                                            <input
+                                                    id="{{ order.id }}"
+                                                    name="status_{{ order.id }}"
+                                                    type="text"
+                                                    value="{{ order.status }}"
+                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center">
 
                                         </div>
 
                                         <div class="col-auto d-flex gap-3 justify-self-end">
-                                            <button type="button"
-                                                    onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"
-                                                    class="btn btn-warning"
-                                                    style="font-size:1.8rem;line-height:100%;">-
-                                            </button>
-                                            <button type="button"
-                                                    onclick="handleChangeInputValue('{{ order.id }}', 'add' )"
-                                                    class="btn btn-success"
-                                                    style="font-size:1.8rem;line-height:100%;">+
-                                            </button>
+{#                                            <button type="button"#}
+{#                                                    onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"#}
+{#                                                    class="btn btn-warning"#}
+{#                                                    style="font-size:1.8rem;line-height:100%;">-#}
+{#                                            </button>#}
+{#                                            <button type="button"#}
+{#                                                    onclick="handleChangeInputValue('{{ order.id }}', 'add' )"#}
+{#                                                    class="btn btn-success"#}
+{#                                                    style="font-size:1.8rem;line-height:100%;">+#}
+{#                                            </button>#}
 
                                             <button type="button"
                                                     class="btn btn-outline-danger"
@@ -141,34 +140,6 @@
             </form>
 
             <script>
-                const itensToPay = document.querySelectorAll("[data-item_to_pay]")
-
-                const totalToPay = document.querySelector("[data-total_to_pay]")
-                const paidInput = document.getElementById('paid')
-                const paidAmount = document.getElementById('paid-amount')
-                const changeInput = document.getElementById('change')
-
-                const calcPay = () => {
-                    const totalDebit = []
-                    for (let item of itensToPay) {
-                        const itemAmount = item.querySelector('input').value
-                        const itemPrice = Number(item.querySelector("[data-item-price]").innerHTML)
-                        const totalPerItem = itemAmount * itemPrice
-
-                        totalDebit.push(totalPerItem)
-
-                    }
-                    console.debug('changing')
-                    totalToPay.value = totalDebit.reduce((previousValue, currentValue) => {
-                        return previousValue + currentValue
-                    }, 0)
-                    totalToPay.innerHTML = totalToPay.value
-
-                    changeInput.value = Number(paidAmount.value) - totalToPay.value
-                    paidInput.value = totalToPay.value
-
-                }
-
                 calcPay()
             </script>
         </div>
@@ -223,5 +194,4 @@
 
     </div>
 
-    <script src="{% static "js/order_static.js" %}"></script>
 {% endblock body %}

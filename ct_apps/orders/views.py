@@ -82,7 +82,7 @@ class SaleOrdersDetailEditingView(View):
         product_form = ProductForm()
 
         for k, v in request.POST.items():
-            print(k,v)
+            print(k, v)
             if k != "csrfmiddlewaretoken":
                 # reach just when adding new items 
                 if k == 'item_id':
@@ -110,6 +110,7 @@ class SaleOrdersDetailEditingView(View):
                     else:
                         # TODO: adding payment to the cashflow
                         print('adding payment to the cashflow')
+                        is_sales = False
 
         context = {
             "order_sale": order_sale,

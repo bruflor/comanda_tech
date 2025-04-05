@@ -11,5 +11,11 @@ function handleChangeInputValue(inputId, type) {
         element.dispatchEvent(new Event("change"))
         console.log('decreasing', element.value)
     }
+    
+    if(type === 'deliver'){
+        element.value = "retrieved"
+        element.dispatchEvent(new Event("change"))
+        console.log('retrieved')
+    }
 
 }

@@ -73,14 +73,14 @@
                                             <span class="mb-0 w-100 p-0"
                                                   data-item-price>{{ order.item.price }}</span><span> $</span>
                                             </div>
-                                            <input
-                                                    id="{{ order.id }}"
-                                                    name="{{ order.id }}"
-                                                    type="number"
-                                                    min="0"
-                                                    value="{{ order.amount }}"
-                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center"
-                                                    onchange="calcPay()">
+{#                                            <input#}
+{#                                                    id="{{ order.id }}"#}
+{#                                                    name="{{ order.id }}"#}
+{#                                                    type="number"#}
+{#                                                    min="0"#}
+{#                                                    value="{{ order.amount }}"#}
+{#                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center"#}
+{#                                                    onchange="calcPay()">#}
 
                                         </div>
 
@@ -173,42 +173,45 @@
             </script>
         </div>
 
+        <div class="row">
+            <div class="col-12">
+                    <div class="p-4  bg-white" style="border-radius: 8px;">
+                        <div>
+                            <h2 class="mt-5 mb-4">Itens a retirar</h2>
+                            <ul class="m-3 p-0">
+                                {% for order in purchased_items %}
+                                    {% if order.status == "paid" %}
+                                        <li class="row mt-3">
+                                            <div class="card">
+                                                <div class="card-body row d-flex align-items-center">
+                                                    <div class="col-8 d-flex gap-2  align-items-center">
+                                                        <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                                        <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
         <div class="container-fluid bg-white p-4 mt-4" style="border-radius: 8px">
             <h2 class="mb-4 mt-0">Histórico de items retirados</h2>
             <div class="p-3 pt-4 mt-4"
                  style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
                 <ul style="padding: 0">
                     {% for order in purchased_items %}
-                        {% if order.status == "retrived" %}
+                        {% if order.status == "retrieved" %}
                             <li class="row mt-3">
-                                <div class="card">
-                                    <div class="card-body row d-flex align-items-center">
-                                        <div class="col-8 d-flex gap-2  align-items-center">
-                                            {# todo: create an after pseudolement here to place som X #}
-                                            <input
-                                                    id="{{ order.id }}"
-                                                    name="{{ order.id }}"
-                                                    type="number"
-                                                    min="0"
-                                                    value="{{ order.amount }}"
-                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center"
-                                                    disabled>
-                                            <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
-                                            <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
-                                        </div>
-
-                                        {#                                <div class="col-auto d-flex gap-3">#}
-                                        {#                                    <button type="button"#}
-                                        {#                                            onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"#}
-                                        {#                                            class="btn btn-warning"#}
-                                        {#                                            style="font-size:1.8rem;line-height:100%;">-#}
-                                        {#                                    </button>#}
-                                        {#                                    <button type="button"#}
-                                        {#                                            onclick="handleChangeInputValue('{{ order.id }}', 'add' )"#}
-                                        {#                                            class="btn btn-success"#}
-                                        {#                                            style="font-size:1.8rem;line-height:100%;">+#}
-                                        {#                                    </button>#}
-                                        {#                                </div>#}
+                                <div class="col">
+                                    <div class="d-flex gap-3 justify-content-between">
+                                        <p class="mb-0">{{ order.item.name }} </p>
+                                        <p class="mb-0"> {{ order.item.price }}</p>
+                                        <p class="mb-0"> {{ order.updated_at }}</p>
                                     </div>
                                 </div>
                             </li>

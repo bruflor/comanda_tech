@@ -85,22 +85,16 @@ class SaleOrdersDetailEditingView(View):
             print(k, v)
             if k != "csrfmiddlewaretoken":
                 # reach just when adding new items 
-                if k == 'item_id':
+                if k == 'item_id' and not k.startswith('status'):
                     print('item_id')
-                    try:
-                        order_item = purchased_item.get(item_id__exact=v)
-                        order_item.amount += 1
-                        order_item.status = 'to_pay'
-                        order_item.save()
-                    except ObjectDoesNotExist:
-                        order_item = purchased_item.create(
-                            item=Product.objects.get(pk=v), order=order_sale, amount=1)
-                        order_item.save()
+                    order_item = purchased_item.create(
+                        item=Product.objects.get(pk=v), order=order_sale, amount=1)
+                    order_item.save()
 
                 # pass through here when changing the amount of items  
                 else:
                     print('else')
-                    if k != "paid" and k != 'consumer-name':
+                    if k != "paid" and k != 'consumer-name' and not k.startswith('status'):
                         order_item = purchased_item.get(pk=k)
                         order_item.amount = v
                         order_item.status = 'paid'
@@ -108,6 +102,11 @@ class SaleOrdersDetailEditingView(View):
                     elif k == 'consumer-name':
                         order_sale.consumer = v
                         order_sale.save()
+                    elif k.startswith('status'):
+                        id = k.split('_')[1]
+                        order_item = purchased_item.get(pk=id)
+                        order_item.status = v
+                        order_item.save()
                     else:
                         # TODO: adding payment to the cashflow
                         # TODO: Remove items from inventory

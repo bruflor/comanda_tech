@@ -95,17 +95,24 @@
                     {% endfor %}
                 </ul>
 
-                <div>
-                    Total a pagar: <span data-total_to_pay></span>
-                    <lable>
-                        Total pago:
-                        <input id="paid-amount" type="number" onchange="calcPay()" value="0">
-                    </lable>
+                <div class="mt-4 pt-4 pb-4" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+                    <h2 class="mb-3">Total a pagar: <span data-total_to_pay></span></h2>
 
-                    <lable>
-                        Troco:
-                        <input type="number" id="change">
-                    </lable>
+                    <div class="row justify-content-center gap-3 mt-4">
+                        <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
+                            <label for="paid-amount">
+                                Total pago:
+                            </label>
+                            <input id="paid-amount" type="number" onchange="calcPay()" value="0">
+                        </div>
+
+                        <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
+                            <label for="change">
+                                Troco:
+                            </label>
+                            <input type="number" id="change" disabled>
+                        </div>
+                    </div>
 
                     <input hidden id="paid" type="number" name="paid" value="0">
 

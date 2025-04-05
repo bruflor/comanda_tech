@@ -7,7 +7,7 @@ class OrderSale(models.Model):
     reference = models.CharField(max_length=200, default="")
 
     def __str__(self):
-        return f"{self.consumer}"
+        return f"{self.reference} - {self.consumer}"
 
 
 class OrderItem(models.Model):
@@ -17,7 +17,7 @@ class OrderItem(models.Model):
     status = models.CharField(max_length=50, default='to_pay')
 
     def __str__(self):
-        return f"{self.order.consumer} : {self.item.name} "
+        return f"{self.order.reference} : {self.item.name} "
 
 
 class Product(models.Model):

@@ -1,11 +1,13 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.views import View
 
 from ct_apps.orders.forms import ProductForm
-from ct_apps.orders.models import OrderSale, OrderItem
+from ct_apps.orders.models import OrderSale, OrderItem, Product
 
 
 # Create your views here.
+# List view - staff and sales
 class SaleOrdersView(View):
     def get(self, request):
 
@@ -27,6 +29,7 @@ class SaleOrdersView(View):
         return render(request, 'orders/index.html', context)
 
 
+# Consumer view
 class SaleOrdersDetailView(View):
     def get(self, request, reference):
         order_sale = OrderSale.objects.get(reference=reference)
@@ -46,6 +49,7 @@ class SaleOrdersDetailView(View):
         return render(request, 'orders/sales_order/index.html', context)
 
 
+# Staff view
 class SaleOrdersDetailEditingView(View):
     def get(self, request, reference, is_editing, is_sales=None, *args, **kwargs):
 
@@ -73,17 +77,20 @@ class SaleOrdersDetailEditingView(View):
 
     def post(self, request, reference, is_editing, is_sales=None):
         order_sale = OrderSale.objects.get(reference=reference)
-        purchased_item = order_sale.purchased_item
+        purchased_item = order_sale.purchased_item.all()
 
         product_form = ProductForm()
 
         for k, v in request.POST.items():
             if k != "csrfmiddlewaretoken":
-                order_item = purchased_item.get(pk=k)
-                if order_item.amount == 0:
-                    order_item
-                order_item.amount = v
-                order_item.save()
+                if k == 'item_id':
+                    try:
+                        order_item = purchased_item.get(item_id__exact=v)
+                    #     perform the update if necessary
+                    except ObjectDoesNotExist:
+                        order_item = purchased_item.create(
+                            item=Product.objects.get(pk=v), order=order_sale, amount=5)
+                        print(order_item)
 
         context = {
             "order_sale": order_sale,
@@ -97,12 +104,32 @@ class SaleOrdersDetailEditingView(View):
             ],
             "product_form": product_form
         }
-        if is_sales:
-            return render(request, "orders/sales_order/edit/sales_editing.html", context)
         return render(request, 'orders/sales_order/edit/staff_editing.html', context)
 
 
+# Sales/admin view
 class SaleOrderAddView(View):
+    def get(self, request, reference, is_editing, is_sales=None, *args, **kwargs):
+        order_sale = OrderSale.objects.get(reference=reference)
+        purchased_item = order_sale.purchased_item.all
+
+        product_form = ProductForm()
+
+        context = {
+            "order_sale": order_sale,
+            "purchased_items": purchased_item,
+            "retrieved_items": [
+                {
+                    "id": "#4567",
+                    "name": 'Canjica',
+                    "timestamp": "date-time"
+                }
+            ],
+            "product_form": product_form
+        }
+
+        return render(request, "orders/sales_order/edit/sales_editing.html", context)
+
     def post(self, request):
         reference = request.POST.get("reference", None)
         item_id = request.POST.get("item_id", None)

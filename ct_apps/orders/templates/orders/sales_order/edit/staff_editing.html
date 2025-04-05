@@ -6,7 +6,9 @@
 {% endblock title %}
 
 {% block body %}
-    <form method="post" action="{% url "orders:detail_edit" reference=order_sale.reference is_editing=True %}">
+    <a href="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}">Editar</a>
+    
+    <form method="post" action="{% url "orders:detail_retrieve" reference=order_sale.reference is_editing=True %}">
         {% csrf_token %}
         <div class="container-fluid">
             <h1 class="mb-5">Edição de comanda</h1>

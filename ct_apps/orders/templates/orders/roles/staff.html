@@ -1,6 +1,5 @@
 {% load static %}
 <script src="{% static 'js/order_static.js' %}"></script>
-</ul>
 
 {#FIXME#}
 {#JUST FOR REFERENCE REMOVE AFTER#}
@@ -18,7 +17,7 @@
 {#            {% endfor %}#}
 {#        </ul>#}
 {##}
-        {#    {{ order.purchased_item.all }}#}
+{#    {{ order.purchased_item.all }}#}
 {#    </li>#}
 {#{% endfor %}#}
 {#</ul>#}
@@ -61,12 +60,12 @@
 
 <div class="mt-4">
     {% for order in sale_order %}
-{#        {% if order.status %}#}
-            <a href="{% url "orders:detail_edit" reference=order.reference is_editing=True %}" class="card m-3 p-3"
-               style="border-left: 8px solid {% if order.has_pending_items %}#0f0{% else %}#aaa{% endif %}">
-                {{ order.reference }}
-                {{ order.consumer }}
-            </a>
-{#        {% endif %}#}
+        {#        {% if order.status %}#}
+        <a href="{% url "orders:detail_retrieve" reference=order.reference is_editing=True %}" class="card m-3 p-3"
+           style="border-left: 8px solid {% if order.has_pending_items %}#0f0{% else %}#aaa{% endif %}">
+            {{ order.reference }}
+            {{ order.consumer }}
+        </a>
+        {#        {% endif %}#}
     {% endfor %}
 </div>

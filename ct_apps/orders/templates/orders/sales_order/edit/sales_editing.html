@@ -110,6 +110,8 @@
 
                 <div class="mt-4 pt-4 pb-4" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
                     <h2 class="mb-3">Total a pagar: <span data-total_to_pay></span></h2>
+                    <h2 class="mb-3">Total a pago: <span data-total_to_pay></span></h2>
+                    
 
                     <div class="row justify-content-center gap-3 mt-4">
                         <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
@@ -127,7 +129,7 @@
                         </div>
                     </div>
 
-                    <input hidden id="paid" type="number" name="paid" value="10">
+                    <input hidden id="paid" type="string" name="paid" value="10">
 
 
                 </div>
@@ -138,37 +140,37 @@
                 </div>
             </form>
 
-            {#            <script>#}
-            {#                const itensToPay = document.querySelectorAll("[data-item_to_pay]")#}
-            {##}
-            {#                const totalToPay = document.querySelector("[data-total_to_pay]")#}
-            {#                const paidInput = document.getElementById('paid')#}
-            {#                const paidAmount = document.getElementById('paid-amount')#}
-            {#                const changeInput = document.getElementById('change')#}
-            {##}
-            {#                const calcPay = () => {#}
-            {#                    const totalDebit = []#}
-            {#                    for (let item of itensToPay) {#}
-            {#                        const itemAmount = item.querySelector('input').value#}
-            {#                        const itemPrice = Number(item.querySelector("[data-item-price]").innerHTML)#}
-            {#                        const totalPerItem = itemAmount * itemPrice#}
-            {##}
-            {#                        totalDebit.push(totalPerItem)#}
-            {##}
-            {#                    }#}
-            {#                    console.debug('changing')#}
-            {#                    totalToPay.value = totalDebit.reduce((previousValue, currentValue) => {#}
-            {#                        return previousValue + currentValue#}
-            {#                    }, 0)#}
-            {#                    totalToPay.innerHTML = totalToPay.value#}
-            {##}
-            {#                    changeInput.value = Number(paidAmount.value) - totalToPay.value#}
-            {#                    paidInput.value = totalToPay.value#}
-            {##}
-            {#                }#}
-            {##}
-            {#                calcPay()#}
-            {#            </script>#}
+            <script>
+                const itensToPay = document.querySelectorAll("[data-item_to_pay]")
+
+                const totalToPay = document.querySelector("[data-total_to_pay]")
+                const paidInput = document.getElementById('paid')
+                const paidAmount = document.getElementById('paid-amount')
+                const changeInput = document.getElementById('change')
+
+                const calcPay = () => {
+                    const totalDebit = []
+                    for (let item of itensToPay) {
+                        const itemAmount = item.querySelector('input').value
+                        const itemPrice = Number(item.querySelector("[data-item-price]").innerHTML)
+                        const totalPerItem = itemAmount * itemPrice
+
+                        totalDebit.push(totalPerItem)
+
+                    }
+                    console.debug('changing')
+                    totalToPay.value = totalDebit.reduce((previousValue, currentValue) => {
+                        return previousValue + currentValue
+                    }, 0)
+                    totalToPay.innerHTML = totalToPay.value
+
+                    changeInput.value = Number(paidAmount.value) - totalToPay.value
+                    paidInput.value = totalToPay.value
+
+                }
+
+                calcPay()
+            </script>
         </div>
 
         <div class="container-fluid bg-white p-4 mt-4" style="border-radius: 8px">

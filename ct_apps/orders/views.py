@@ -90,6 +90,7 @@ class SaleOrdersDetailEditingView(View):
                     try:
                         order_item = purchased_item.get(item_id__exact=v)
                         order_item.amount += 1
+                        order_item.status = 'to_pay'
                         order_item.save()
                     except ObjectDoesNotExist:
                         order_item = purchased_item.create(
@@ -102,14 +103,16 @@ class SaleOrdersDetailEditingView(View):
                     if k != "paid" and k != 'consumer-name':
                         order_item = purchased_item.get(pk=k)
                         order_item.amount = v
+                        order_item.status = 'paid'
                         order_item.save()
                     elif k == 'consumer-name':
                         order_sale.consumer = v
                         order_sale.save()
-
                     else:
                         # TODO: adding payment to the cashflow
-                        print('adding payment to the cashflow')
+                        # TODO: Remove items from inventory
+                        print('adding payment to the cashflow', float(v))
+                        
                         is_sales = False
 
         context = {

@@ -82,7 +82,7 @@ class SaleOrdersDetailEditingView(View):
         product_form = ProductForm()
 
         for k, v in request.POST.items():
-            print(k, v)
+            print(k,v)
             if k != "csrfmiddlewaretoken":
                 # reach just when adding new items 
                 if k == 'item_id':
@@ -93,11 +93,12 @@ class SaleOrdersDetailEditingView(View):
                         order_item.save()
                     except ObjectDoesNotExist:
                         order_item = purchased_item.create(
-                            item=Product.objects.get(pk=v), order=order_sale, amount=5)
+                            item=Product.objects.get(pk=v), order=order_sale, amount=1)
                         order_item.save()
 
                 # pass through here when changing the amount of items  
                 else:
+                    print('else')
                     if k != "paid" and k != 'consumer-name':
                         order_item = purchased_item.get(pk=k)
                         order_item.amount = v
@@ -105,7 +106,7 @@ class SaleOrdersDetailEditingView(View):
                     elif k == 'consumer-name':
                         order_sale.consumer = v
                         order_sale.save()
-                        
+
                     else:
                         # TODO: adding payment to the cashflow
                         print('adding payment to the cashflow')
@@ -122,6 +123,9 @@ class SaleOrdersDetailEditingView(View):
             ],
             "product_form": product_form
         }
+
+        if is_sales:
+            return render(request, "orders/sales_order/edit/sales_editing.html", context)
         return render(request, 'orders/sales_order/edit/staff_editing.html', context)
 
 

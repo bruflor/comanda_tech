@@ -98,13 +98,14 @@ class SaleOrdersDetailEditingView(View):
 
                 # pass through here when changing the amount of items  
                 else:
-                    if k != "paid" and k != 'consumer_name':
+                    if k != "paid" and k != 'consumer-name':
                         order_item = purchased_item.get(pk=k)
                         order_item.amount = v
                         order_item.save()
-                    elif k == 'consumer_name':
-                        # todo: updating the name
-                        print('updating the name')
+                    elif k == 'consumer-name':
+                        order_sale.consumer = v
+                        order_sale.save()
+                        
                     else:
                         # TODO: adding payment to the cashflow
                         print('adding payment to the cashflow')

@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Consumidor -> Vendedor: Solicita uma comanda com alguns itens
+Vendedor -> Sistema: Abre uma nova comanda
+Sistema -> Database: Salva, associa o consumidor, e os itens à comanda
+Vendedor -> Sistema: Adiciona ítens à nova comanda
+Vendedor -> Sistema: Remove ítens à nova comanda
+Sistema -> Database: Salva itens adicionados / removidos
+Vendedor -> Consumidor: Solicita pagamento
+Consumidor -> Vendedor: Raliza pagamento e retira a comanda
+Sistema -> Database: Salva o pagamento
+Sistema ->o Database: Reduz os produtos no estoque
+ 
+
+
+@enduml

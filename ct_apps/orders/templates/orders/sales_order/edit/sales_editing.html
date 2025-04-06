@@ -30,7 +30,7 @@
                     
                     {# ADD ITEMS #}
                     <form method="post"
-                          action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}">
+                          action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}">
                         <div class="row flex-no-wrap px-3 align-items-center mt-4">
                             {% csrf_token %}
                             <div class="col-9">
@@ -58,7 +58,7 @@
 
             {# payment form #}
             <form method="post"
-                  action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}"
+                  action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}"
                   id="payment-form">
                 {% csrf_token %}
                 <ul class="m-3 p-0">

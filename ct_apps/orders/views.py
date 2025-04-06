@@ -1,5 +1,6 @@
 import sys
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 
@@ -54,7 +55,7 @@ class SaleOrdersDetailView(View):
 
 # Staff view
 class SaleOrdersDetailEditingView(View):
-    def get(self, request, reference, is_editing, is_sales=None, *args, **kwargs):
+    def get(self, request, reference, is_editing, is_sales=False, *args, **kwargs):
 
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
@@ -71,7 +72,8 @@ class SaleOrdersDetailEditingView(View):
                     "timestamp": "date-time"
                 }
             ],
-            "product_form": product_form
+            "product_form": product_form,
+            "is_sales": is_sales
         }
 
         if is_sales:
@@ -139,12 +141,14 @@ class SaleOrdersDetailEditingView(View):
                     "timestamp": "date-time"
                 }
             ],
-            "product_form": product_form
+            "product_form": product_form,
+            "is_sales": is_sales
         }
 
         if is_sales:
             return render(request, "orders/sales_order/edit/sales_editing.html", context)
-        return render(request, 'orders/sales_order/edit/staff_editing.html', context)
+
+        return HttpResponseRedirect(f'/orders/{reference}/True')
 
 
 # Sales/admin view

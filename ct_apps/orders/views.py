@@ -1,8 +1,12 @@
+import sys
+
 from django.shortcuts import render
 from django.views import View
 
-from ct_apps.orders.forms import ProductForm
 from ct_apps.orders.models import OrderSale, OrderItem, Product, Transaction
+
+if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv:
+    from ct_apps.orders.forms import ProductForm
 
 
 # Create your views here.
@@ -10,13 +14,13 @@ from ct_apps.orders.models import OrderSale, OrderItem, Product, Transaction
 class SaleOrdersView(View):
     def get(self, request):
 
-        sale_order = OrderSale.objects.all()
+        order_sales = OrderSale.objects.exclude(reference__startswith='internal_')
 
         for param in request.GET.items():
             print(param)
 
         context = {
-            "sale_order": [so for so in sale_order]
+            "sale_order": [so for so in order_sales]
         }
 
         if request.GET.get('search_order_id', None):

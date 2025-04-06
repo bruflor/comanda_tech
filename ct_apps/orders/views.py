@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 
 from ct_apps.orders.forms import ProductForm
-from ct_apps.orders.models import OrderSale, OrderItem, Product
+from ct_apps.orders.models import OrderSale, OrderItem, Product, Transaction
 
 
 # Create your views here.
@@ -117,6 +117,8 @@ class SaleOrdersDetailEditingView(View):
                                     item.delete()
 
                         # TODO: adding payment to the cashflow
+                        Transaction.objects.create(order=order_sale, amount=v, payment_method="dinheiro").save()
+
                         # TODO: Remove items from inventory
                         print('adding payment to the cashflow', float(v))
 

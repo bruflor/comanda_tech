@@ -29,3 +29,11 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class Transaction(models.Model):
+    order = models.ForeignKey("OrderSale", on_delete=models.CASCADE)
+    amount = models.FloatField(default=0.0)
+    payment_method = models.CharField(default="dinheiro", max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)

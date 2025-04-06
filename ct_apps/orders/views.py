@@ -111,16 +111,17 @@ class SaleOrdersDetailEditingView(View):
                             if request.POST.get(f'status_{item.id}'):
                                 if item.status == 'to_pay':
                                     item.status = 'paid'
+
+                                    product = Product.objects.get(pk=item.item.id)
+                                    product.stock_unity -= 1
+                                    product.save()
+
                                     item.save()
 
                                 if item.status == 'to_remove':
                                     item.delete()
 
-                        # TODO: adding payment to the cashflow
                         Transaction.objects.create(order=order_sale, amount=v, payment_method="dinheiro").save()
-
-                        # TODO: Remove items from inventory
-                        print('adding payment to the cashflow', float(v))
 
                         is_sales = False
 

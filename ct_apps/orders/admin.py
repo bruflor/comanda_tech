@@ -14,8 +14,9 @@ class OrderSaleAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
-    list_display = ['name', 'price', 'stock_unity']
-    list_filter = ['name', 'price', 'stock_unity']
+    list_display = ['name', 'price', 'stock_unity', 'is_internal']
+    list_filter = ['name', 'price', 'stock_unity','is_internal']
+
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):

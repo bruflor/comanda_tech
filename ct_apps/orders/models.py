@@ -26,7 +26,7 @@ class Product(models.Model):
     price = models.FloatField(null=False, blank=False, default=0.0)
     stock_unity = models.IntegerField(null=False, blank=False, default=1)
     cost_per_unity = models.FloatField(null=True, blank=True)
-    is_internal = models.BooleanField(default=False, blank=True, null=True)
+    is_internal = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name}"

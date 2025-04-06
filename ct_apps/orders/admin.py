@@ -6,7 +6,9 @@ from ct_apps.orders.models import OrderSale, OrderItem, Product
 # Register your models here.
 @admin.register(OrderSale)
 class OrderSaleAdmin(admin.ModelAdmin):
-    pass
+    empty_value_display = "-empty-"
+    list_display = ['reference', 'consumer' ]
+    list_filter = ['reference', 'consumer']
 
 
 @admin.register(Product)
@@ -18,5 +20,5 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
-    list_display = ['order', 'item', 'status']
-    list_filter = ['item', 'order', 'status']
+    list_display = ['order', 'item', 'status', 'updated_at']
+    list_filter = ['item', 'order', 'status', 'updated_at']

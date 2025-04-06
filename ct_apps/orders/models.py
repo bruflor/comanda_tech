@@ -15,6 +15,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey("OrderSale", on_delete=models.CASCADE, related_name='purchased_item')
     amount = models.IntegerField(default=0)
     status = models.CharField(max_length=50, default='to_pay')
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.order.reference} : {self.item.name} "

@@ -111,11 +111,10 @@ class SaleOrdersDetailEditingView(View):
                             if request.POST.get(f'status_{item.id}'):
                                 if item.status == 'to_pay':
                                     item.status = 'paid'
+                                    item.save()
 
                                 if item.status == 'to_remove':
                                     item.delete()
-
-                                item.save()
 
                         # TODO: adding payment to the cashflow
                         # TODO: Remove items from inventory

@@ -24,7 +24,7 @@
 
 
 <div class="p-3">
-    <form action="{% url "orders:list" %}" id="search" onsubmit="searchOrders()">
+    <form action="{% url "orders:list" %}" id="search">
         <div class="d-flex justify-content-start mt-3 mb-3 gap-4">
             <label for="search_order_status_active">Ativo
                 <input type="radio" checked name="search_order_status" id="search_order_status_active" value="1">

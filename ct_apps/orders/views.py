@@ -61,6 +61,11 @@ class SaleOrdersDetailEditingView(View):
         purchased_item = order_sale.purchased_item.all
 
         product_form = ProductForm()
+        
+        product_choice = [(p.id, p.name, p.price, p.stock_unity) for p in
+                                             Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
+        
+        product_form.fields['Item'].choices = product_choice
 
         context = {
             "order_sale": order_sale,

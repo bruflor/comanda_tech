@@ -107,14 +107,18 @@ class SaleOrdersDetailEditingView(View):
                         order_item.status = v
                         order_item.save()
                     else:
-                        # TODO: adding payment to the cashflow
-                        # TODO: Remove items from inventory
                         for item in purchased_item:
                             if request.POST.get(f'status_{item.id}'):
-                                item.status = 'paid'
+                                if item.status == 'to_pay':
+                                    item.status = 'paid'
+
+                                if item.status == 'to_remove':
+                                    item.delete()
+
                                 item.save()
 
-
+                        # TODO: adding payment to the cashflow
+                        # TODO: Remove items from inventory
                         print('adding payment to the cashflow', float(v))
 
                         is_sales = False

@@ -5,7 +5,10 @@ function handleChangeInputValue(inputId, type) {
     if (type === 'add') {
         element.value = "to_pay"
         element.dispatchEvent(new Event("change"))
-        btnChangeStatus.onclick = () => handleChangeInputValue(element.id, 'remove')
+        btnChangeStatus.onclick = () => {
+            handleChangeInputValue(element.id, 'remove')
+            calcPay()
+        }
         btnChangeStatus.innerText = "Remover"
         btnChangeStatus.classList.add("btn-outline-danger")
         btnChangeStatus.classList.remove("btn-outline-success")
@@ -15,7 +18,10 @@ function handleChangeInputValue(inputId, type) {
     if (type === 'remove') {
         element.value = "to_remove"
         element.dispatchEvent(new Event("change"))
-        btnChangeStatus.onclick = () => handleChangeInputValue(element.id, 'add')
+        btnChangeStatus.onclick = () => {
+            handleChangeInputValue(element.id, 'add')
+            calcPay()
+        }
         btnChangeStatus.innerText = "Adicionar"
         btnChangeStatus.classList.add("btn-outline-success")
         btnChangeStatus.classList.remove("btn-outline-danger")
@@ -46,12 +52,16 @@ const calcPay = () => {
         const itemPrice = Number(item.querySelector("[data-item-price]").innerHTML)
         const totalPerItem = itemAmount * itemPrice
 
-        totalDebit.push(totalPerItem)
+        if (itemStatus.value === "to_pay" ) {
+            totalDebit.push(totalPerItem)
+        }
         // itemStatus.value = "paid"
+        
+
+        console.debug(totalDebit)
 
 
     }
-    console.debug('changing')
     totalToPay.value = totalDebit.reduce((previousValue, currentValue) => {
         return previousValue + currentValue
     }, 0)

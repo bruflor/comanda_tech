@@ -32,6 +32,8 @@ function handleChangeInputValue(inputId, type) {
     if (type === 'deliver') {
         element.value = "retrieved"
         element.dispatchEvent(new Event("change"))
+        btnChangeStatus.disabled = true
+        btnChangeStatus.classList.add("d-none")
         console.log('retrieved')
     }
 

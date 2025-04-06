@@ -7,42 +7,45 @@
 
 {% block body %}
     <script src="{% static "js/order_static.js" %}"></script>
-    <a href="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}">Editar</a>
-
-    <form method="post" action="{% url "orders:detail_retrieve" reference=order_sale.reference is_editing=True %}">
-        {% csrf_token %}
-        <div class="container-fluid">
-            <h1 class="mb-5">Edição de comanda</h1>
-
-            <div class="mb-4">
+    <div class="container">
+        <form method="post" action="{% url "orders:detail_retrieve" reference=order_sale.reference is_editing=True %}">
+            {% csrf_token %}
+            <div class="container-fluid d-flex justify-content-between">
+                <h1 class="mb-5">Edição de comanda</h1>
+                <a href="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}"
+                   class="btn btn-outline-primary btn-sm h-100">Editar Itens</a>
+            </div>
+            <div class="mb-4 container-fluid">
                 <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
                 <h3><small class="text-muted">Nome:</small> {{ order_sale.consumer }}</h3>
             </div>
 
-            <div>
+            <div class="container-fluid">
                 <h2 class="mt-5 mb-4">Itens</h2>
-                <ul class="m-3 p-0">
+                <ul class="row p-2">
                     {% for order in purchased_items %}
                         {% if order.status == "paid" %}
-                            <li class="row mt-3">
+                            <li class="row px-md-4 py-2 mx-auto col-12 col-md-6">
                                 <div class="card">
-                                    <div class="card-body row d-flex align-items-center">
-                                        <div class="col-8 d-flex gap-2  align-items-center">
+                                    <div class="card-body gap-4 d-flex flex-column">
+                                        <div class="d-flex gap-2  align-items-center">
                                             {# todo: create an after pseudolement here to place som X #}
                                             <input
                                                     id="{{ order.id }}"
                                                     name="status_{{ order.id }}"
                                                     type="text"
                                                     value="{{ order.status }}"
-                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center">
-                                            <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                                    hidden
+                                                    style="border:none; width: 100%;text-align: center">
+                                            <span class="mb-0 w-100 p-0 fw-bold fs-1"> {{ order.item.name }}</span>
                                             <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
                                         </div>
 
-                                        <div class="col-4 d-flex gap-3">
+                                        <div class="d-grid gap-2">
                                             <button type="button"
+                                                    id="change-status_{{ order.id }}"
                                                     onclick="handleChangeInputValue('{{ order.id }}', 'deliver' )"
-                                                    class="btn btn-success" style="font-size:1.8rem;line-height:100%;">
+                                                    class="btn btn-success " style="font-size:1.8rem;line-height:100%;">
                                                 Entregar item
                                             </button>
                                         </div>
@@ -55,8 +58,8 @@
                 </ul>
             </div>
 
-            <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
-                <button type="reset" class="btn btn-outline-danger w-50">Voltar</button>
+            <div class="container-fluid d-flex mt-4 justify-content-md-end justify-content-center gap-2">
+                <button type="reset" class="btn btn-outline-danger w-50" onclick="location.reload()">Cancelar</button>
                 <button type="submit" class="btn btn-primary w-50">Salvar</button>
             </div>
 
@@ -78,6 +81,7 @@
                     {% endfor %}
                 </ul>
             </div>
-        </div>
+    </div>
     </form>
+    </div>
 {% endblock body %}

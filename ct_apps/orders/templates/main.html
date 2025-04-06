@@ -14,9 +14,11 @@
 </head>
 <body style="background: #eaeaea">
 
-{% if user.type != 'consumer' %}
-<div>sidevar everywhere</div>
-{% endif %}
+
+<div class="container-fluid mt-4 d-flex justify-content-between mb-4">
+    <h1 class="text-muted">Comanda Tech</h1>
+    <button onclick="window.history.back()" class="btn btn-small btn-outline-secondary">Voltar</button>
+</div>
 
 {% block body %}
 {% endblock body %}

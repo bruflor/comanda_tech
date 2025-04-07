@@ -26,7 +26,7 @@ class AccountantDashBoardView(View):
         return render(request, "accountant/index.html", context=context)
 
 
-def download_csv(request):
+def download_csv_products(request):
     # Create the HttpResponse object with CSV headers
     response = HttpResponse(
         content_type='text/csv',
@@ -49,6 +49,33 @@ def download_csv(request):
             product.price,
             product.initial_stock,
             product.sold_unity
+        ])
+
+    return response
+
+def download_csv_transactions(request):
+    # Create the HttpResponse object with CSV headers
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': f'attachment; filename="transactions_{datetime.now().strftime("%Y%m%d")}.csv"'},
+    )
+
+    # Create CSV writer
+    writer = csv.writer(response)
+
+    # Write CSV header
+    writer.writerow(['Comanda (Reference)', 'Nome do consumidor', 'Valor gasto', 'Método de pagamento'])
+
+    # Get queryset (customize this based on your needs)
+    queryset = Transaction.objects.all().order_by("order__reference")
+
+    # Write data rows
+    for transaction in queryset:
+        writer.writerow([
+            transaction.order.reference,
+            transaction.order.consumer,
+            transaction.amount,
+            transaction.payment_method
         ])
 
     return response

@@ -45,6 +45,7 @@
 
     </div>
 
-    <a href="{% url "accountant:download_csv" %}" class="btn btn-primary">Exportar tabela completa</a>
+    <a href="{% url "accountant:download_csv_product" %}" class="btn btn-primary">Exportar lista de produtos</a>
+    <a href="{% url "accountant:download_csv_transaction" %}" class="btn btn-primary">Exportar lista de transações</a>
 
 {% endblock body %}

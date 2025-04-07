@@ -1,5 +1,6 @@
 import sys
 
+from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
@@ -37,13 +38,6 @@ class SaleOrdersDetailView(View):
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item,
-            "retrieved_items": [
-                {
-                    "id": "#4567",
-                    "name": 'Canjica',
-                    "timestamp": "date-time"
-                }
-            ]
         }
         return render(request, 'orders/sales_order/index.html', context)
 
@@ -57,21 +51,15 @@ class SaleOrdersDetailEditingView(View):
 
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.stock_unity) for p in
-                          Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
+        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+                          Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
+                              'name')]
 
         product_form.fields['Item'].choices = product_choice
 
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item,
-            "retrieved_items": [
-                {
-                    "id": "#4567",
-                    "name": 'Canjica',
-                    "timestamp": "date-time"
-                }
-            ],
             "product_form": product_form,
             "is_sales": is_sales
         }
@@ -86,8 +74,9 @@ class SaleOrdersDetailEditingView(View):
 
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.stock_unity) for p in
-                          Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
+        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+                          Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
+                          'name')]
 
         product_form.fields['Item'].choices = product_choice
 
@@ -121,7 +110,7 @@ class SaleOrdersDetailEditingView(View):
                                 item.status = 'paid'
 
                                 product = Product.objects.get(pk=item.item.id)
-                                product.stock_unity -= 1
+                                product.sold_unity += 1
                                 product.save()
 
                                 item.save()
@@ -138,13 +127,6 @@ class SaleOrdersDetailEditingView(View):
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item.all(),
-            "retrieved_items": [
-                {
-                    "id": "#4567",
-                    "name": 'Canjica',
-                    "timestamp": "date-time"
-                }
-            ],
             "product_form": product_form,
             "is_sales": is_sales
         }
@@ -163,21 +145,15 @@ class SaleOrderAddView(View):
 
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.stock_unity) for p in
-                          Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
+        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+                          Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
+                          'name')]
 
         product_form.fields['Item'].choices = product_choice
 
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item,
-            "retrieved_items": [
-                {
-                    "id": "#4567",
-                    "name": 'Canjica',
-                    "timestamp": "date-time"
-                }
-            ],
             "product_form": product_form
         }
 
@@ -195,21 +171,15 @@ class SaleOrderAddView(View):
 
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.stock_unity) for p in
-                          Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
+        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+                      Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
+                          'name')]
 
         product_form.fields['Item'].choices = product_choice
 
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item.all(),
-            "retrieved_items": [
-                {
-                    "id": "#4567",
-                    "name": 'Canjica',
-                    "timestamp": "date-time"
-                }
-            ],
             "product_form": product_form
         }
 

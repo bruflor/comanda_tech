@@ -11,8 +11,8 @@
         {% csrf_token %}
         <div class="d-flex justify-content-between">
             <h2 class="mb-5">
-                <a href="/orders/" class="btn btn-small btn-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                <a href="/orders/" class="btn btn-sm btn-secondary mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px"
                          fill="#fff">
                         <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
                     </svg>
@@ -33,7 +33,7 @@
             <ul class="row">
                 {% for order in purchased_items %}
                     {% if order.status == "paid" %}
-                        <li class="row px-md-4 py-2 mx-auto col-12 col-md-6">
+                        <li class="row px-md-4 py-2 mx-md-auto col-12 col-md-6">
                             <div class="card">
                                 <div class="card-body gap-4 d-flex flex-column">
                                     <div class="d-flex gap-2  align-items-center">

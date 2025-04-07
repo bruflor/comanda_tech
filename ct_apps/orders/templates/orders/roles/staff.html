@@ -17,10 +17,13 @@
 
 <div class="mt-4">
     {% for order in sale_order %}
-        <a href="{% url "orders:detail_retrieve" reference=order.reference is_editing=True %}" class="card my-3 p-3 text-decoration-none text-reset"
-           style="border-left: 8px solid {% if order.consumer == "None" %}#aaa{% else %}#3bb143{% endif %}">
+        <a href="{% url "orders:detail_retrieve" reference=order.reference is_editing=True %}"
+           class="card my-3 p-3 text-decoration-none text-reset"
+           style="border-left: 8px solid {% if order.consumer %}#3bb143{% else %}#aaa{% endif %}">
             {{ order.reference }}
-            {{ order.consumer }}
+            {% if order.consumer %}
+                {{ order.consumer }}
+            {% endif %}
         </a>
     {% endfor %}
 </div>

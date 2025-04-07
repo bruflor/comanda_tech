@@ -14,7 +14,6 @@ if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv:
 # List view - staff and sales
 class SaleOrdersView(View):
     def get(self, request):
-
         order_sales = OrderSale.objects.exclude(reference__startswith='internal_')
 
         # for param in request.GET.items():
@@ -23,7 +22,7 @@ class SaleOrdersView(View):
         context = {
             "sale_order": [so for so in order_sales]
         }
-        
+
         search_order_ref = request.GET.get('search_order_id', None)
 
         if search_order_ref:
@@ -63,10 +62,10 @@ class SaleOrdersDetailEditingView(View):
         purchased_item = order_sale.purchased_item.all
 
         product_form = ProductForm()
-        
+
         product_choice = [(p.id, p.name, p.price, p.stock_unity) for p in
-                                             Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
-        
+                          Product.objects.filter(stock_unity__gt=0).exclude(is_internal=True).order_by('name')]
+
         product_form.fields['Item'].choices = product_choice
 
         context = {
@@ -99,49 +98,48 @@ class SaleOrdersDetailEditingView(View):
         product_form.fields['Item'].choices = product_choice
 
         for k, v in request.POST.items():
-            print(k, v)
             if k != "csrfmiddlewaretoken":
                 # reach just when adding new items 
                 if k == 'item_id' and not k.startswith('status'):
-                    print('item_id')
                     order_item = purchased_item.create(
                         item=Product.objects.get(pk=v), order=order_sale, amount=1)
                     order_item.save()
 
-                # pass through here when changing the amount of items  
+                elif k != "paid" and k != 'consumer-name' and not k.startswith('status') and k != 'payment-method':
+                    order_item = purchased_item.get(pk=k)
+                    order_item.amount = v
+                    order_item.status = 'paid'
+                    order_item.save()
+
+                elif k == 'consumer-name':
+                    order_sale.consumer = v
+                    order_sale.save()
+
+                elif k.startswith('status'):
+                    id = k.split('_')[1]
+                    order_item = purchased_item.get(pk=id)
+                    order_item.status = v
+                    order_item.save()
                 else:
-                    print('else')
-                    if k != "paid" and k != 'consumer-name' and not k.startswith('status'):
-                        order_item = purchased_item.get(pk=k)
-                        order_item.amount = v
-                        order_item.status = 'paid'
-                        order_item.save()
-                    elif k == 'consumer-name':
-                        order_sale.consumer = v
-                        order_sale.save()
-                    elif k.startswith('status'):
-                        id = k.split('_')[1]
-                        order_item = purchased_item.get(pk=id)
-                        order_item.status = v
-                        order_item.save()
-                    else:
-                        for item in purchased_item:
-                            if request.POST.get(f'status_{item.id}'):
-                                if item.status == 'to_pay':
-                                    item.status = 'paid'
+                    for item in purchased_item:
+                        if request.POST.get(f'status_{item.id}'):
+                            if item.status == 'to_pay':
+                                item.status = 'paid'
 
-                                    product = Product.objects.get(pk=item.item.id)
-                                    product.stock_unity -= 1
-                                    product.save()
+                                product = Product.objects.get(pk=item.item.id)
+                                product.stock_unity -= 1
+                                product.save()
 
-                                    item.save()
+                                item.save()
 
-                                if item.status == 'to_remove':
-                                    item.delete()
+                            if item.status == 'to_remove':
+                                item.delete()
+                    if k != 'payment-method':
+                        payment_method = request.POST.get('payment-method')
+                        Transaction.objects.create(order=order_sale, amount=v,
+                                                   payment_method=payment_method).save()
 
-                        Transaction.objects.create(order=order_sale, amount=v, payment_method="dinheiro").save()
-
-                        is_sales = False
+                    is_sales = False
 
         context = {
             "order_sale": order_sale,

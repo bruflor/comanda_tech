@@ -7,184 +7,190 @@
 
 {% block body %}
     <script src="{% static "js/order_static.js" %}"></script>
-    <div class="container p-5">
+    <div class="mb-5">
+        <h2 class="mb-5">
+            <a href="/orders/{{ order_sale.reference }}/True" class="btn btn-small btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                     fill="#fff">
+                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+                </svg>
+                Voltar
+            </a>
+            Edição de comanda
+        </h2>
 
-        <div class="mb-5">
-            <h1 class="mb-5">Edição de comanda</h1>
-
-            <div class="mb-4">
-                <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
-                <h3>
-                    <label for="consumer-name" class="text-muted">Nome:</label>
-                    <input id="consumer-name" name="consumer-name" type="text" value="{{ order_sale.consumer }}"
-                           form="payment-form"/>
-                </h3>
-            </div>
-
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-12  flex-1">
-                <div class="container-fluid bg-white p-4" style="border-radius: 8px;">
-                    <h2>Itens disponíveis</h2>
-                    
-                    {# ADD ITEMS #}
-                    <form method="post"
-                          action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}">
-                        <div class="row flex-no-wrap px-3 align-items-center mt-4">
-                            {% csrf_token %}
-                            <div class="col-9">
-                                <select name="item_id" class="p-3 w-100">
-                                    {% for product in product_form %}
-                                        {% for choice in product.field.choices %}
-                                            <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
-                                                Estoque: {{ choice.3 }}</option>
-                                        {% endfor %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <button class="w-100 btn btn-primary p-3 justify-self-end">Adicionar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="container-fluid mb-5 bg-white p-4" style="border-radius: 8px;">
-            <h2 class="mb-5">Itens a pagar</h2>
-
-            {# payment form #}
-            <form method="post"
-                  action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}"
-                  id="payment-form">
-                {% csrf_token %}
-                <ul class="m-3 p-0">
-                    {% for order in purchased_items %}
-                        {% if order.status == "to_pay" %}
-                            <li class="row mt-3">
-                                <div class="card">
-                                    <div class="card-body row d-flex align-items-center">
-                                        <div class="col-auto d-flex gap-2 flex-fill align-items-center"
-                                             data-item_to_pay style="font-size:1.2rem;">
-                                            <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
-                                            <div class="col-auto">
-                                            <span class="mb-0 w-100 p-0"
-                                                  data-item-price>{{ order.item.price }}</span><span> $</span>
-                                            </div>
-                                            <input
-                                                    id="{{ order.id }}"
-                                                    name="status_{{ order.id }}"
-                                                    type="text"
-                                                    value="{{ order.status }}"
-                                                    style="border:none; width: 100%;font-size:1.8rem; text-align: center">
-
-                                        </div>
-
-                                        <div class="col-auto d-flex gap-3 justify-self-end">
-                                            <button type="button"
-                                                    id="change-status_{{ order.id }}"
-                                                    class="btn btn-outline-danger"
-                                                    style="font-size:1.8rem;line-height:100%;"
-                                                    onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"
-                                            >Remover
-                                                
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-
-                <div class="mt-4 pt-4 pb-4" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
-                    <h2 class="mb-3">Total a pagar: <span data-total_to_pay></span></h2>
-                    <h2 class="mb-3">Total a pago: <span data-total_to_pay></span></h2>
-                    
-
-                    <div class="row justify-content-center gap-3 mt-4">
-                        <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
-                            <label for="paid-amount">
-                                Total pago:
-                            </label>
-                            <input id="paid-amount" type="number" onchange="calcPay()" value="0">
-                        </div>
-
-                        <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
-                            <label for="change">
-                                Troco:
-                            </label>
-                            <input type="number" id="change" disabled>
-                        </div>
-                    </div>
-
-                    <input hidden id="paid" type="string" name="paid" value="10">
-
-
-                </div>
-
-                <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
-                    <button type="reset" class="btn btn-outline-danger w-50">Cancelar</button>
-                    <button type="submit" class="btn btn-primary w-50">Efetuar pagamento</button>
-                </div>
-            </form>
-
-            <script>
-                calcPay()
-            </script>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                    <div class="p-4  bg-white" style="border-radius: 8px;">
-                        <div>
-                            <h2 class="mt-5 mb-4">Itens a retirar</h2>
-                            <ul class="m-3 p-0">
-                                {% for order in purchased_items %}
-                                    {% if order.status == "paid" %}
-                                        <li class="row mt-3">
-                                            <div class="card">
-                                                <div class="card-body row d-flex align-items-center">
-                                                    <div class="col-8 d-flex gap-2  align-items-center">
-                                                        <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
-                                                        <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-            </div>
-        </div>
-
-        <div class="container-fluid bg-white p-4 mt-4" style="border-radius: 8px">
-            <h2 class="mb-4 mt-0">Histórico de items retirados</h2>
-            <div class="p-3 pt-4 mt-4"
-                 style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
-                <ul style="padding: 0">
-                    {% for order in purchased_items %}
-                        {% if order.status == "retrieved" %}
-                            <li class="row mt-3">
-                                <div class="col">
-                                    <div class="d-flex gap-3 justify-content-between">
-                                        <p class="mb-0">{{ order.item.name }} </p>
-                                        <p class="mb-0"> {{ order.item.price }}</p>
-                                        <p class="mb-0"> {{ order.updated_at }}</p>
-                                    </div>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
+        <div class="mb-4">
+            <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
+            <h3>
+                <label for="consumer-name" class="text-muted">Nome:</label>
+                <input id="consumer-name" name="consumer-name" type="text" value="{{ order_sale.consumer }}"
+                       form="payment-form"/>
+            </h3>
         </div>
 
     </div>
+
+    <div class="row mb-5">
+        <div class="col-12  flex-1">
+            <div class="container-fluid bg-white p-4" style="border-radius: 8px;">
+                <h2>Itens disponíveis</h2>
+
+                {# ADD ITEMS #}
+                <form method="post"
+                      action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}">
+                    <div class="row flex-no-wrap px-3 align-items-center mt-4">
+                        {% csrf_token %}
+                        <div class="col-9">
+                            <select name="item_id" class="p-3 w-100">
+                                {% for product in product_form %}
+                                    {% for choice in product.field.choices %}
+                                        <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
+                                            Estoque: {{ choice.3 }}</option>
+                                    {% endfor %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <button class="w-100 btn btn-primary p-3 justify-self-end">Adicionar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container-fluid mb-5 bg-white p-4" style="border-radius: 8px;">
+        <h2 class="mb-5">Itens a pagar</h2>
+
+        {# payment form #}
+        <form method="post"
+              action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}"
+              id="payment-form">
+            {% csrf_token %}
+            <ul class="m-3 p-0">
+                {% for order in purchased_items %}
+                    {% if order.status == "to_pay" %}
+                        <li class="row mt-3">
+                            <div class="card">
+                                <div class="card-body row d-flex align-items-center">
+                                    <div class="col-auto d-flex gap-2 flex-fill align-items-center"
+                                         data-item_to_pay style="font-size:1.2rem;">
+                                        <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                        <div class="col-auto">
+                                            <span class="mb-0 w-100 p-0"
+                                                  data-item-price>{{ order.item.price }}</span><span> $</span>
+                                        </div>
+                                        <input
+                                                id="{{ order.id }}"
+                                                name="status_{{ order.id }}"
+                                                type="text"
+                                                value="{{ order.status }}"
+                                                style="border:none; width: 100%;font-size:1.8rem; text-align: center">
+
+                                    </div>
+
+                                    <div class="col-auto d-flex gap-3 justify-self-end">
+                                        <button type="button"
+                                                id="change-status_{{ order.id }}"
+                                                class="btn btn-outline-danger"
+                                                style="font-size:1.8rem;line-height:100%;"
+                                                onclick="handleChangeInputValue('{{ order.id }}', 'remove' )"
+                                        >Remover
+
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <div class="mt-4 pt-4 pb-4" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+                <h2 class="mb-3">Total a pagar: <span data-total_to_pay></span></h2>
+                <h2 class="mb-3">Total a pago: <span data-total_to_pay></span></h2>
+
+
+                <div class="row justify-content-center gap-3 mt-4">
+                    <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
+                        <label for="paid-amount">
+                            Total pago:
+                        </label>
+                        <input id="paid-amount" type="number" onchange="calcPay()" value="0">
+                    </div>
+
+                    <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
+                        <label for="change">
+                            Troco:
+                        </label>
+                        <input type="number" id="change" disabled>
+                    </div>
+                </div>
+
+                <input hidden id="paid" type="string" name="paid" value="10">
+
+
+            </div>
+
+            <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
+                <button type="reset" class="btn btn-outline-danger w-50">Cancelar</button>
+                <button type="submit" class="btn btn-primary w-50">Efetuar pagamento</button>
+            </div>
+        </form>
+
+        <script>
+            calcPay()
+        </script>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="p-4  bg-white" style="border-radius: 8px;">
+                <div>
+                    <h2 class="mt-5 mb-4">Itens a retirar</h2>
+                    <ul class="m-3 p-0">
+                        {% for order in purchased_items %}
+                            {% if order.status == "paid" %}
+                                <li class="row mt-3">
+                                    <div class="card">
+                                        <div class="card-body row d-flex align-items-center">
+                                            <div class="col-8 d-flex gap-2  align-items-center">
+                                                <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                                <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-4 mt-4" style="border-radius: 8px">
+        <h2 class="mb-4 mt-0">Histórico de items retirados</h2>
+        <div class="p-3 pt-4 mt-4"
+             style="color:#888; border: 1px solid #ddd; border-radius: 8px; background: #eee">
+            <ul style="padding: 0">
+                {% for order in purchased_items %}
+                    {% if order.status == "retrieved" %}
+                        <li class="row mt-3">
+                            <div class="col">
+                                <div class="d-flex gap-3 justify-content-between">
+                                    <p class="mb-0">{{ order.item.name }} </p>
+                                    <p class="mb-0"> {{ order.item.price }}</p>
+                                    <p class="mb-0"> {{ order.updated_at }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
 
 {% endblock body %}

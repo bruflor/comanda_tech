@@ -8,24 +8,28 @@
 {% block body %}
     <script src="{% static "js/order_static.js" %}"></script>
     <div class="mb-5">
-        <h2 class="mb-5">
-            <a href="/orders/{{ order_sale.reference }}/True" class="btn btn-small btn-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                     fill="#fff">
-                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
-                </svg>
-                Voltar
-            </a>
-            Edição de comanda
-        </h2>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-between align-items-center mb-4">
+            <div class="d-flex gap-2 align-items-center">
+                <a href="/orders/{{ order_sale.reference }}/True" class="btn btn-sm btn-secondary mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px"
+                         fill="#fff">
+                        <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+                    </svg>
+                    Voltar
+                </a>
+                <h2>
+                    Edição de comanda
+                </h2>
+            </div>
+        </div>
 
         <div class="mb-4">
             <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
-            <h3>
-                <label for="consumer-name" class="text-muted">Nome:</label>
+            <div class="d-flex gap-2 align-items-center">
+                <label for="consumer-name" class="text-muted form-label fs-3">Nome:</label>
                 <input id="consumer-name" name="consumer-name" type="text" value="{{ order_sale.consumer }}"
-                       form="payment-form"/>
-            </h3>
+                       form="payment-form" class="form-control w-100 form-control-lg"/>
+            </div>
         </div>
 
     </div>
@@ -41,7 +45,7 @@
                     <div class="row flex-no-wrap px-3 align-items-center mt-4">
                         {% csrf_token %}
                         <div class="col-9">
-                            <select name="item_id" class="p-3 w-100">
+                            <select name="item_id" class="p-3 w-100 form-select">
                                 {% for product in product_form %}
                                     {% for choice in product.field.choices %}
                                         <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
@@ -76,17 +80,18 @@
                                 <div class="card-body row d-flex align-items-center">
                                     <div class="col-auto d-flex gap-2 flex-fill align-items-center"
                                          data-item_to_pay style="font-size:1.2rem;">
-                                        <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
+                                        <span class="mb-0 w-100 p-0 fs-4 fw-bold "> {{ order.item.name }}</span>
                                         <div class="col-auto">
                                             <span class="mb-0 w-100 p-0"
-                                                  data-item-price>{{ order.item.price }}</span><span> $</span>
+                                                  data-item-price>{{ order.item.price }}</span><span> €</span>
                                         </div>
                                         <input
                                                 id="{{ order.id }}"
                                                 name="status_{{ order.id }}"
                                                 type="text"
                                                 value="{{ order.status }}"
-                                                style="border:none; width: 100%;font-size:1.8rem; text-align: center">
+                                                class="fs-4"
+                                                style="border:none; width: 100%; text-align: center">
 
                                     </div>
 
@@ -108,38 +113,38 @@
             </ul>
 
             <div class="mt-4 pt-4 pb-4" style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
-                <h2 class="mb-3">Total a pagar: <span data-total_to_pay></span></h2>
-                <div class="row justify-content-center gap-3 mt-4">
-                    <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
-                        <label for="paid-amount">
-                            Total pago:
-                        </label>
-                        <input id="paid-amount" type="number" onchange="calcPay()" value="0">
+                <div class="bg-light">
+                    <h2 class="mb-3">Total a pagar: <span class="border-bottom border-warning fw-bold border-2"
+                                                          data-total_to_pay></span> €</h2>
+                </div>
+                <div class="container justify-content-start mt-4">
+                    <div class="row">
+                        <div class="input-group input-group-lg col">
+                            <label for="paid-amount" class="input-group-text">Total pago</label>
+                            <input id="paid-amount" class="form-control" type="number" onchange="calcPay()" value="0">
+                        </div>
+
+                        <div class="input-group input-group-lg col">
+                            <label for="change" class="input-group-text">
+                                Troco:
+                            </label>
+                            <input type="number" id="change" disabled class="form-control">
+                        </div>
                     </div>
 
-                    <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
-                        <label for="change">
-                            Troco:
-                        </label>
-                        <input type="number" id="change" disabled>
-                    </div>
-
-                    <div class="col-auto d-flex gap-3 align-items-center" style="font-size: 1.6rem;">
-                        <label for="payment-method">
+                    <div class="align-items-center gap-1 mt-4">
+                        <label for="payment-method" class="form-label fs-5">
                             Método de pagamento:
                         </label>
-                        <select id="payment-method" name="payment-method">
+                        <select id="payment-method" name="payment-method" class="form-select form-select-lg">
                             <option value="dinheiro">Dinheiro</option>
                             <option value="mbway">Mb-way</option>
                             <option value="voucher">Voucher</option>
                         </select>
                     </div>
-                    
                 </div>
 
                 <input hidden id="paid" type="string" name="paid" value="10">
-
-
             </div>
 
             <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
@@ -166,7 +171,7 @@
                                         <div class="card-body row d-flex align-items-center">
                                             <div class="col-8 d-flex gap-2  align-items-center">
                                                 <span class="mb-0 w-100 p-0"> {{ order.item.name }}</span>
-                                                <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
+                                                <span class="mb-0 w-100 p-0">{{ order.item.price }} €</span>
                                             </div>
                                         </div>
                                     </div>

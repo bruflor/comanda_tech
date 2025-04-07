@@ -1,0 +1,49 @@
+{% extends "main.html" %}
+
+{% block title %}
+    <title>
+        ACPT - Accountant View
+    </title>
+{% endblock title %}
+
+{% block body %}
+    <h2>Gestão de recursos</h2>
+    <div>
+        <h3>Visão geral</h3>
+
+        <div class="row my-5">
+            <div class="col-6">Total de arrecadado:</div>
+            <div class="col-6">Total de custos</div>
+        </div>
+
+        <div>
+            <h4>Produtos mais vendidos:</h4>
+            
+            {% for p in product|dictsortreversed:"sold_unity" %}
+            <div class="row bg-white p-3 my-3">
+                <div class="col-3">
+                    <div>Nome</div>
+                    <div>{{ p.name }}</div>
+                </div>
+                <div class="col-3">
+                    <div>Quantidade vendida</div>
+                    <div>{{ p.sold_unity }}</div>
+                </div>
+                <div class="col-3">
+                    <div>Preço de venda</div>
+                    <div>{{ p.price }} E</div>
+                </div>
+                <div class="col-3">
+                    <div>Total arrecadado do produto</div>
+{#                    <div>{{ p.price|multiply:p.sold_unity}}</div>#}
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+
+    </div>
+
+    <button>Exportar tabela complesta</button>
+
+{% endblock body %}

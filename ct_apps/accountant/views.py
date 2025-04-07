@@ -1,3 +1,7 @@
+import csv
+from datetime import datetime
+
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
@@ -8,11 +12,43 @@ from ct_apps.orders.models import Product, Transaction
 class AccountantDashBoardView(View):
     def get(self, request):
         product = Product.objects.all().exclude(is_internal=True)
-        transaction = Transaction.objects.all()
+        total_collected = Transaction.objects.filter(amount__gt=0)
+
+        partial_total = 0
+        for t in total_collected:
+            partial_total += t.amount
 
         context = {
             'product': product,
-            'transaction': transaction
+            'total_collected': partial_total
         }
 
         return render(request, "accountant/index.html", context=context)
+
+
+def download_csv(request):
+    # Create the HttpResponse object with CSV headers
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': f'attachment; filename="products_{datetime.now().strftime("%Y%m%d")}.csv"'},
+    )
+
+    # Create CSV writer
+    writer = csv.writer(response)
+
+    # Write CSV header
+    writer.writerow(['Nome do produto', 'Preço', 'Estoque inicial', 'Quantidade vendida'])
+
+    # Get queryset (customize this based on your needs)
+    queryset = Product.objects.all().order_by("-sold_unity")
+
+    # Write data rows
+    for product in queryset:
+        writer.writerow([
+            product.name,
+            product.price,
+            product.initial_stock,
+            product.sold_unity
+        ])
+
+    return response

@@ -1,4 +1,5 @@
 {% extends "main.html" %}
+{% load multiply_nubers %}
 
 {% block title %}
     <title>
@@ -12,7 +13,7 @@
         <h3>Visão geral</h3>
 
         <div class="row my-5">
-            <div class="col-6">Total de arrecadado:</div>
+            <div class="col-6">Total de arrecadado: {{ total_collected }} E</div>
             <div class="col-6">Total de custos</div>
         </div>
 
@@ -35,7 +36,7 @@
                 </div>
                 <div class="col-3">
                     <div>Total arrecadado do produto</div>
-{#                    <div>{{ p.price|multiply:p.sold_unity}}</div>#}
+                    <div>{{ p.price|multiply_2_numbers:p.sold_unity}} E</div>
                 </div>
             </div>
             {% endfor %}
@@ -44,6 +45,6 @@
 
     </div>
 
-    <button>Exportar tabela complesta</button>
+    <a href="{% url "accountant:download_csv" %}" class="btn btn-primary">Exportar tabela completa</a>
 
 {% endblock body %}

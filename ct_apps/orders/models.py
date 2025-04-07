@@ -24,7 +24,8 @@ class OrderItem(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
     price = models.FloatField(null=False, blank=False, default=0.0)
-    stock_unity = models.IntegerField(null=False, blank=False, default=1)
+    initial_stock = models.IntegerField(null=False, blank=False, default=1)
+    sold_unity = models.IntegerField(null=False, blank=False, default=0)
     cost_per_unity = models.FloatField(null=True, blank=True)
     is_internal = models.BooleanField(default=False)
 

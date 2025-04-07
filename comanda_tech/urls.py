@@ -23,4 +23,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('orders/', include('ct_apps.orders.urls', namespace="orders")),
+    path('accountant/', include('ct_apps.accountant.urls', namespace="accountant")),
 ] + static(settings.STATIC_URL, document_root = settings.STATIC_URL )

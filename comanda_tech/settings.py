@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     'ct_apps.orders',
+    'ct_apps.accountant',
 ]
 
 MIDDLEWARE = [

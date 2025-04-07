@@ -16,9 +16,6 @@ class SaleOrdersView(View):
     def get(self, request):
         order_sales = OrderSale.objects.exclude(reference__startswith='internal_')
 
-        # for param in request.GET.items():
-        #     print(param)
-
         context = {
             "sale_order": [so for so in order_sales]
         }
@@ -26,10 +23,7 @@ class SaleOrdersView(View):
         search_order_ref = request.GET.get('search_order_id', None)
 
         if search_order_ref:
-            print('here searching')
             context['sale_order'] = order_sales.filter(reference__contains=search_order_ref)
-
-        print(context, 'context')
 
         return render(request, 'orders/index.html', context)
 

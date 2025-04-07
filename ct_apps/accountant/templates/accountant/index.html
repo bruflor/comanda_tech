@@ -18,24 +18,28 @@
 
         <div>
             <h4>Produtos mais vendidos:</h4>
+            
+            {% for p in product|dictsortreversed:"sold_unity" %}
             <div class="row bg-white p-3 my-3">
                 <div class="col-3">
                     <div>Nome</div>
-                    <div>Feijoada da boa</div>
+                    <div>{{ p.name }}</div>
                 </div>
                 <div class="col-3">
                     <div>Quantidade vendida</div>
-                    <div>100</div>
+                    <div>{{ p.sold_unity }}</div>
                 </div>
                 <div class="col-3">
                     <div>Preço de venda</div>
-                    <div>10.00 E</div>
+                    <div>{{ p.price }} E</div>
                 </div>
                 <div class="col-3">
                     <div>Total arrecadado do produto</div>
-                    <div>1000.00 E</div>
+{#                    <div>{{ p.price|multiply:p.sold_unity}}</div>#}
                 </div>
             </div>
+            {% endfor %}
+            
         </div>
 
     </div>

@@ -9,8 +9,8 @@
     <script src="{% static "js/order_static.js" %}"></script>
     <form method="post" action="{% url "orders:detail_retrieve" reference=order_sale.reference is_editing=True %}">
         {% csrf_token %}
-        <div class="d-flex justify-content-between">
-            <h2 class="mb-5">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-between align-items-center">
+            <div class="d-flex gap-2 align-items-center">
                 <a href="/orders/" class="btn btn-sm btn-secondary mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px"
                          fill="#fff">
@@ -18,10 +18,14 @@
                     </svg>
                     Voltar
                 </a>
-                Entrega de itens
-            </h2>
+                <h2>
+                    Entrega de itens
+                </h2>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-end align-items-center">
             <a href="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}"
-               class="btn btn-primary h-100">Editar Itens</a>
+               class="btn btn-primary">Editar Itens</a>
+            </div>
         </div>
         <div class="mb-4">
             <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
@@ -30,13 +34,13 @@
 
         <div>
             <h2 class="mt-5 mb-4">Itens</h2>
-            <ul class="row">
+            <ul class="row p-0 m-0">
                 {% for order in purchased_items %}
                     {% if order.status == "paid" %}
-                        <li class="row px-md-4 py-2 mx-md-auto col-12 col-md-6">
+                        <li class="row px-md-4 py-2 mx-auto mx-md-0 col-12 col-md-4">
                             <div class="card">
                                 <div class="card-body gap-4 d-flex flex-column">
-                                    <div class="d-flex gap-2  align-items-center">
+                                    <div class="d-flex gap-2  align-items-center w-100 justify-content-between">
                                         {# todo: create an after pseudolement here to place som X #}
                                         <input
                                                 id="{{ order.id }}"
@@ -46,7 +50,7 @@
                                                 hidden
                                                 style="border:none; width: 100%;text-align: center">
                                         <span class="mb-0 w-100 p-0 fw-bold fs-1"> {{ order.item.name }}</span>
-                                        <span class="mb-0 w-100 p-0">{{ order.item.price }} $</span>
+                                        <span class="mb-0 w-100 p-0 text-end">{{ order.item.price }} €</span>
                                     </div>
 
                                     <div class="d-grid gap-2">
@@ -66,7 +70,7 @@
             </ul>
         </div>
 
-        <div class="container-fluid d-flex mt-4 justify-content-md-end justify-content-center gap-2">
+        <div class="d-flex mt-4 justify-content-md-end justify-content-center gap-2">
             <button type="reset" class="btn btn-outline-danger w-50" onclick="location.reload()">Cancelar</button>
             <button type="submit" class="btn btn-primary w-50">Salvar</button>
         </div>

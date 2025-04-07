@@ -9,7 +9,7 @@
     <script src="{% static "js/order_static.js" %}"></script>
     <form method="post" action="{% url "orders:detail_retrieve" reference=order_sale.reference is_editing=True %}">
         {% csrf_token %}
-        <div class="d-grid gap-2 d-md-flex justify-content-md-between align-items-center">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-between align-items-center mb-4">
             <div class="d-flex gap-2 align-items-center">
                 <a href="/orders/" class="btn btn-sm btn-secondary mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px"

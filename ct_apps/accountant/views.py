@@ -1,15 +1,18 @@
 import csv
 from datetime import datetime
 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
+from ct_apps.accountant.forms import AuthForm
 from ct_apps.orders.models import Product, Transaction
 
 
 # Create your views here.
-class AccountantDashBoardView(View):
+class AccountantDashBoardView(LoginRequiredMixin, View):
     def get(self, request):
         product = Product.objects.all().exclude(is_internal=True)
         total_collected = Transaction.objects.filter(amount__gt=0)
@@ -52,6 +55,7 @@ def download_csv_products(request):
         ])
 
     return response
+
 
 def download_csv_transactions(request):
     # Create the HttpResponse object with CSV headers

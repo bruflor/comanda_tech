@@ -1,5 +1,6 @@
 import sys
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -13,7 +14,7 @@ if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv:
 
 # Create your views here.
 # List view - staff and sales
-class SaleOrdersView(View):
+class SaleOrdersView(LoginRequiredMixin,View):
     def get(self, request):
         order_sales = OrderSale.objects.exclude(reference__startswith='internal_')
 
@@ -30,7 +31,7 @@ class SaleOrdersView(View):
 
 
 # Consumer view
-class SaleOrdersDetailView(View):
+class SaleOrdersDetailView(LoginRequiredMixin,View):
     def get(self, request, reference):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
@@ -43,7 +44,7 @@ class SaleOrdersDetailView(View):
 
 
 # Staff view
-class SaleOrdersDetailEditingView(View):
+class SaleOrdersDetailEditingView(LoginRequiredMixin,View):
     def get(self, request, reference, is_editing, is_sales=False, *args, **kwargs):
 
         order_sale = OrderSale.objects.get(reference=reference)
@@ -138,7 +139,7 @@ class SaleOrdersDetailEditingView(View):
 
 
 # Sales/admin view
-class SaleOrderAddView(View):
+class SaleOrderAddView(LoginRequiredMixin,View):
     def get(self, request, reference, is_editing, is_sales=None, *args, **kwargs):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all

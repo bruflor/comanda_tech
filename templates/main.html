@@ -19,9 +19,20 @@
     <h1 class="text-muted d-flex justify-context-start gap-3">
         Comanda Tech
     </h1>
+
+    <a class="btn btn-sm btn-warning h-100" href="/accounts/logout?next=/">Sair</a>
 </div>
 
 <div class="container">
+
+    <nav>
+        <ul>
+            <li><a href="/">Página inicial</a></li>
+            <li><a href="{% url "orders:list" %}">Comandas</a></li>
+            <li><a href="{% url "accountant:index" %}">Contabilidade</a></li>
+        </ul>
+    </nav>
+
     {% block body %}
     {% endblock body %}
 </div>

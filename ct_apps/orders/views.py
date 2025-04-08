@@ -14,7 +14,7 @@ if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv:
 
 # Create your views here.
 # List view - staff and sales
-class SaleOrdersView(LoginRequiredMixin,View):
+class SaleOrdersView(LoginRequiredMixin, View):
     def get(self, request):
         order_sales = OrderSale.objects.exclude(reference__startswith='internal_')
 
@@ -31,7 +31,7 @@ class SaleOrdersView(LoginRequiredMixin,View):
 
 
 # Consumer view
-class SaleOrdersDetailView(LoginRequiredMixin,View):
+class SaleOrdersDetailView(LoginRequiredMixin, View):
     def get(self, request, reference):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
@@ -44,15 +44,18 @@ class SaleOrdersDetailView(LoginRequiredMixin,View):
 
 
 # Staff view
-class SaleOrdersDetailEditingView(LoginRequiredMixin,View):
+class SaleOrdersDetailEditingView(LoginRequiredMixin, View):
     def get(self, request, reference, is_editing, is_sales=False, *args, **kwargs):
+
+        user = list(request.user.groups.values_list('name', flat=True))
+        is_sales = True if user.__contains__('sales') else False
 
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
 
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+        product_choice = [(p.id, p.name, p.price, p.initial_stock - p.sold_unity) for p in
                           Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
                               'name')]
 
@@ -73,11 +76,14 @@ class SaleOrdersDetailEditingView(LoginRequiredMixin,View):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all()
 
+        user = list(request.user.groups.values_list('name', flat=True))
+        is_sales = True if user.__contains__('sales') else False
+
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+        product_choice = [(p.id, p.name, p.price, p.initial_stock - p.sold_unity) for p in
                           Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
-                          'name')]
+                              'name')]
 
         product_form.fields['Item'].choices = product_choice
 
@@ -139,23 +145,27 @@ class SaleOrdersDetailEditingView(LoginRequiredMixin,View):
 
 
 # Sales/admin view
-class SaleOrderAddView(LoginRequiredMixin,View):
+class SaleOrderAddView(LoginRequiredMixin, View):
     def get(self, request, reference, is_editing, is_sales=None, *args, **kwargs):
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
 
+        user = list(request.user.groups.values_list('name', flat=True))
+        is_sales = True if user.__contains__('sales') else False
+
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
+        product_choice = [(p.id, p.name, p.price, p.initial_stock - p.sold_unity) for p in
                           Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
-                          'name')]
+                              'name')]
 
         product_form.fields['Item'].choices = product_choice
 
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item,
-            "product_form": product_form
+            "product_form": product_form,
+            "is_sales": is_sales
         }
 
         return render(request, "orders/sales_order/edit/sales_editing.html", context)
@@ -172,16 +182,17 @@ class SaleOrderAddView(LoginRequiredMixin,View):
 
         product_form = ProductForm()
 
-        product_choice = [(p.id, p.name, p.price, p.initial_stock-p.sold_unity) for p in
-                      Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
-                          'name')]
+        product_choice = [(p.id, p.name, p.price, p.initial_stock - p.sold_unity) for p in
+                          Product.objects.filter(sold_unity__lt=F("initial_stock")).exclude(is_internal=True).order_by(
+                              'name')]
 
         product_form.fields['Item'].choices = product_choice
 
         context = {
             "order_sale": order_sale,
             "purchased_items": purchased_item.all(),
-            "product_form": product_form
+            "product_form": product_form,
+            "is_sales": False
         }
 
         return render(request, "orders/sales_order/edit/sales_editing.html", context)

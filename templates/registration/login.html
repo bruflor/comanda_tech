@@ -1,19 +1,25 @@
 {% extends "main.html" %}
 
 {% block title %}
-    <title>Comanda tech - Login</title>
+    <title>Comanda tech - Entrar</title>
 {% endblock title %}
 
 {% block body %}
-    <form action="{% url "login" %}" method="post">
+    <form action="{% url "login" %}" method="post" class="mx-auto">
         {% csrf_token %}
 
-        <input type="text" name="username">
+        <div class="input-group my-3">
+            <label for="username" class="input-group-text">Utilizador</label>
+            <input type="text" id="username" name="username" class="form-control">
+        </div>
 
-        <input type="password" name="password">
+        <div class="input-group my-3">
+            <label for="password" class="input-group-text">Senha</label>
+            <input type="password" id="password" name="password" class="form-control">
+        </div>
 
         <input type="hidden" name="next" value="{{ next }}"/>
 
-        <button type="submit">Log in!</button>
+        <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
 {% endblock body %}

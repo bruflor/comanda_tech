@@ -23,7 +23,7 @@
                 </h2>
             </div>
 
-            {% if is_sales %}
+            {% if can_sale %}
                 <div class="d-grid gap-2 d-md-flex justify-content-end align-items-center">
                     <a href="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=True %}"
                        class="btn btn-primary">Editar Itens</a>

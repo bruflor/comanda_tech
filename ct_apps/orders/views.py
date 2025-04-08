@@ -48,7 +48,7 @@ class SaleOrdersDetailEditingView(LoginRequiredMixin, View):
     def get(self, request, reference, is_editing, is_sales=False, *args, **kwargs):
 
         user = list(request.user.groups.values_list('name', flat=True))
-        is_sales = True if user.__contains__('sales') else False
+        can_sale = True if user.__contains__('sales') else False
 
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item.all
@@ -65,10 +65,11 @@ class SaleOrdersDetailEditingView(LoginRequiredMixin, View):
             "order_sale": order_sale,
             "purchased_items": purchased_item,
             "product_form": product_form,
-            "is_sales": is_sales
+            "is_sales": is_sales,
+            "can_sale": can_sale
         }
 
-        if is_sales:
+        if is_sales and can_sale:
             return render(request, "orders/sales_order/edit/sales_editing.html", context)
         return render(request, 'orders/sales_order/edit/staff_editing.html', context)
 
@@ -77,7 +78,7 @@ class SaleOrdersDetailEditingView(LoginRequiredMixin, View):
         purchased_item = order_sale.purchased_item.all()
 
         user = list(request.user.groups.values_list('name', flat=True))
-        is_sales = True if user.__contains__('sales') else False
+        can_sale = True if user.__contains__('sales') else False
 
         product_form = ProductForm()
 
@@ -135,10 +136,11 @@ class SaleOrdersDetailEditingView(LoginRequiredMixin, View):
             "order_sale": order_sale,
             "purchased_items": purchased_item.all(),
             "product_form": product_form,
-            "is_sales": is_sales
+            "is_sales": is_sales,
+            "can_sale": can_sale
         }
 
-        if is_sales:
+        if is_sales and can_sale:
             return render(request, "orders/sales_order/edit/sales_editing.html", context)
 
         return HttpResponseRedirect(f'/orders/{reference}/True')
@@ -151,7 +153,7 @@ class SaleOrderAddView(LoginRequiredMixin, View):
         purchased_item = order_sale.purchased_item.all
 
         user = list(request.user.groups.values_list('name', flat=True))
-        is_sales = True if user.__contains__('sales') else False
+        can_sale = True if user.__contains__('sales') else False
 
         product_form = ProductForm()
 
@@ -165,7 +167,8 @@ class SaleOrderAddView(LoginRequiredMixin, View):
             "order_sale": order_sale,
             "purchased_items": purchased_item,
             "product_form": product_form,
-            "is_sales": is_sales
+            "is_sales": is_sales,
+            "can_sale": can_sale
         }
 
         return render(request, "orders/sales_order/edit/sales_editing.html", context)
@@ -173,6 +176,9 @@ class SaleOrderAddView(LoginRequiredMixin, View):
     def post(self, request):
         reference = request.POST.get("reference", None)
         item_id = request.POST.get("item_id", None)
+
+        user = list(request.user.groups.values_list('name', flat=True))
+        can_sale = True if user.__contains__('sales') else False
 
         order_sale = OrderSale.objects.get(reference=reference)
         purchased_item = order_sale.purchased_item
@@ -192,7 +198,7 @@ class SaleOrderAddView(LoginRequiredMixin, View):
             "order_sale": order_sale,
             "purchased_items": purchased_item.all(),
             "product_form": product_form,
-            "is_sales": False
+            "can_sale": can_sale
         }
 
         return render(request, "orders/sales_order/edit/sales_editing.html", context)

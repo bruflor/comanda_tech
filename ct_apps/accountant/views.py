@@ -7,7 +7,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from ct_apps.accountant.forms import AuthForm
 from ct_apps.orders.models import Product, Transaction
 
 

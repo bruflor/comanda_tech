@@ -5,21 +5,24 @@
 {% endblock title %}
 
 {% block body %}
-    <form action="{% url "login" %}" method="post" class="mx-auto">
-        {% csrf_token %}
+    <div class="col-12 col-md-6 mx-auto mt-5 p-4 bg-white" style="border-radius: 8px;">
+        <form action="{% url "login" %}" method="post" class="d-flex flex-column">
+            {% csrf_token %}
 
-        <div class="input-group my-3">
-            <label for="username" class="input-group-text">Utilizador</label>
-            <input type="text" id="username" name="username" class="form-control">
-        </div>
+            <div class="input-group my-3">
+                <label for="username" class="input-group-text col-3">Utilizador</label>
+                <input type="text" id="username" name="username" class="form-control">
+            </div>
 
-        <div class="input-group my-3">
-            <label for="password" class="input-group-text">Senha</label>
-            <input type="password" id="password" name="password" class="form-control">
-        </div>
+            <div class="input-group my-3">
+                <label for="password" class="input-group-text col-3">Senha</label>
+                <input type="password" id="password" name="password" class="form-control">
+            </div>
 
-        <input type="hidden" name="next" value="{{ next }}"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
 
-        <button type="submit" class="btn btn-primary">Entrar</button>
-    </form>
+            <button type="submit" class="btn btn-primary col-3 mt-3 ml-auto mr-0 align-self-end">Entrar</button>
+        </form>
+    </div>
+
 {% endblock body %}

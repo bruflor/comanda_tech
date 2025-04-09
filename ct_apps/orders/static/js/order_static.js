@@ -5,28 +5,19 @@ function handleChangeInputValue(inputId, type) {
     if (type === 'add') {
         element.value = "to_pay"
         element.dispatchEvent(new Event("change"))
-        btnChangeStatus.onclick = () => {
-            handleChangeInputValue(element.id, 'remove')
-            calcPay()
-        }
+        btnChangeStatus.onclick = () => handleChangeInputValue(element.id, 'remove')
         btnChangeStatus.innerText = "Remover"
         btnChangeStatus.classList.add("btn-outline-danger")
         btnChangeStatus.classList.remove("btn-outline-success")
-        console.log('to pay')
     }
 
     if (type === 'remove') {
         element.value = "to_remove"
         element.dispatchEvent(new Event("change"))
-        btnChangeStatus.onclick = () => {
-            handleChangeInputValue(element.id, 'add')
-            calcPay()
-        }
+        btnChangeStatus.onclick = () => handleChangeInputValue(element.id, 'add')
         btnChangeStatus.innerText = "Adicionar"
         btnChangeStatus.classList.add("btn-outline-success")
         btnChangeStatus.classList.remove("btn-outline-danger")
-
-        console.log('to remove')
     }
 
     if (type === 'deliver') {
@@ -34,9 +25,10 @@ function handleChangeInputValue(inputId, type) {
         element.dispatchEvent(new Event("change"))
         btnChangeStatus.disabled = true
         btnChangeStatus.classList.add("d-none")
-        console.log('retrieved')
     }
 
+    // Call calcPay after all updates are done
+    calcPay()
 }
 
 const calcPay = () => {
@@ -68,7 +60,6 @@ const calcPay = () => {
         return previousValue + currentValue
     }, 0)
     totalToPay.innerHTML = totalToPay.value
-
 
     changeInput.value = Number(paidAmount.value) - totalToPay.value
     paidInput.value = totalToPay.value

@@ -5,19 +5,13 @@ services:
     ports:
       - "8000:8000"
     
-#    env_file:
-#      - .env
     environment:
-      - DJANGO_ENV=production
       - DEBUG=False
-#      - ALLOWED_HOSTS=.acpt.pt,localhost,127.0.0.1
       - ALLOWED_HOSTS=*
       - DJANGO_SUPERUSER_USERNAME=acpt
       - DJANGO_SUPERUSER_EMAIL=acpt@acpt.pt
       - DJANGO_SUPERUSER_PASSWORD=Acpt_2025#
     
-#    secrets:
-#      - django_superuser_password
 
     command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
   
@@ -54,7 +48,3 @@ services:
 volumes:
   comanda_tech_db:
 #  pgadmin-data:
-
-#secrets:
-#  django_superuser_password:
-#    external: true

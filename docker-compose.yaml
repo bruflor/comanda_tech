@@ -1,0 +1,60 @@
+services:
+  comanda_tech_app:
+    build: .
+    
+    ports:
+      - "8000:8000"
+    
+#    env_file:
+#      - .env
+    environment:
+      - DJANGO_ENV=production
+      - DEBUG=False
+#      - ALLOWED_HOSTS=.acpt.pt,localhost,127.0.0.1
+      - ALLOWED_HOSTS=*
+      - DJANGO_SUPERUSER_USERNAME=acpt
+      - DJANGO_SUPERUSER_EMAIL=acpt@acpt.pt
+      - DJANGO_SUPERUSER_PASSWORD=Acpt_2025#
+    
+#    secrets:
+#      - django_superuser_password
+
+    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
+  
+  #    depends_on: comanda_tech_db
+  
+  comanda_tech_db:
+    image: postgres
+    container_name: "comanda_tech_db"
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - comanda_tech_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USERNAME: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    container_name: "pgadminr_container"
+#    restart: always
+#    ports:
+#      - "8888:80"
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+#      PGADMIN_DEFAULT_PASSWORD: "Jaca#12345"
+#    volumes:
+#      - pgadmin-data:/var/lib/pgadmin
+#
+#    depends_on:
+#      - db
+
+volumes:
+  comanda_tech_db:
+#  pgadmin-data:
+
+#secrets:
+#  django_superuser_password:
+#    external: true

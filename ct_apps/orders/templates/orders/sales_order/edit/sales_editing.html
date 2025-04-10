@@ -25,7 +25,7 @@
 
         <div class="mb-4">
             <h2><small class="text-muted">Nº:</small> {{ order_sale.reference }}</h2>
-            
+
         </div>
 
     </div>
@@ -38,19 +38,20 @@
                 {# ADD ITEMS #}
                 <form method="post"
                       action="{% url "orders:detail_editing_order" reference=order_sale.reference is_editing=True is_sales=is_sales %}">
-                    <div class="row flex-no-wrap px-3 align-items-center mt-4">
+                    <div class="row d-flex px-3 align-items-center mt-4 gap-3">
                         {% csrf_token %}
-                        <div class="col-9">
+                        <div class="col-12 col-md-9">
                             <select name="item_id" class="p-3 w-100 form-select">
                                 {% for product in product_form %}
                                     {% for choice in product.field.choices %}
-                                        <option value="{{ choice.0 }}">{{ choice.1 }} | Preço: {{ choice.2 }} |
+                                        <option value="{{ choice.0 }}" class="text-wrap">
+                                            {{ choice.1 }} | Preço: {{ choice.2 }} |
                                             Estoque: {{ choice.3 }}</option>
                                     {% endfor %}
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <button class="w-100 btn btn-primary p-3 justify-self-end">Adicionar</button>
                         </div>
                     </div>
@@ -114,17 +115,21 @@
                                                           data-total_to_pay></span> €</h2>
                 </div>
                 <div class="container justify-content-start mt-4">
-                    <div class="row">
-                        <div class="input-group input-group-lg col">
-                            <label for="paid-amount" class="input-group-text">Total pago</label>
-                            <input id="paid-amount" class="form-control" type="number" onchange="calcPay()" value="0">
+                    <div class="row d-flex gap-3">
+                        <div class="col-12 col-md-8">
+                            <div class="input-group input-group-lg">
+                                <label for="paid-amount" class="input-group-text">Total pago</label>
+                                <input id="paid-amount" class="form-control" type="number" onchange="calcPay()"
+                                       value="0">
+                            </div>
                         </div>
-
-                        <div class="input-group input-group-lg col">
-                            <label for="change" class="input-group-text">
-                                Troco:
-                            </label>
-                            <input type="number" id="change" disabled class="form-control">
+                        <div class="col-12 col-md-4">
+                            <div class="input-group input-group-lg">
+                                <label for="change" class="input-group-text">
+                                    Troco:
+                                </label>
+                                <input type="number" id="change" disabled class="form-control">
+                            </div>
                         </div>
                     </div>
 
@@ -140,14 +145,14 @@
                     </div>
                 </div>
 
-                <input hidden id="paid" type="string" name="paid" value="10">
+                <input hidden id="paid" type="text" name="paid" value="10">
             </div>
             <div class="input-group input-group-lg mt-3">
                 <label for="consumer-name" class="text-muted input-group-text fs-5">Nome:</label>
                 <input id="consumer-name" name="consumer-name" type="text" value="{{ order_sale.consumer }}"
                        form="payment-form" class="form-control form-control-lg"/>
             </div>
-        
+
             <div class="d-flex m-2 mt-4 justify-content-md-end justify-content-center gap-2">
                 <button type="reset" class="btn btn-outline-danger w-50">Cancelar</button>
                 <button type="submit" class="btn btn-primary w-50">Efetuar pagamento</button>

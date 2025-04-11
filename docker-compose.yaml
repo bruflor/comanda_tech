@@ -6,29 +6,30 @@ services:
       - "8000:8000"
     
     environment:
-      - DEBUG=False
+      - DEBUG=True
       - ALLOWED_HOSTS=*
       - DJANGO_SUPERUSER_USERNAME=acpt
       - DJANGO_SUPERUSER_EMAIL=acpt@acpt.pt
       - DJANGO_SUPERUSER_PASSWORD=Acpt_2025#
     
 
-    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
+#    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
   
   #    depends_on: comanda_tech_db
   
-  comanda_tech_db:
-    image: postgres
-    container_name: "comanda_tech_db"
-    restart: always
-    ports:
-      - "5432:5432"
-    volumes:
-      - comanda_tech_db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USERNAME: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+#  comanda_tech_db:
+#    image: postgres
+#    container_name: "comanda_tech_db"
+#    restart: always
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - comanda_tech_db:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_HOST_AUTH_METHOD: trust
+#      POSTGRES_USERNAME: "postgres"
+#      POSTGRES_PASSWORD: "postgres"
 
 #  pgadmin:
 #    image: dpage/pgadmin4

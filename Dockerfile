@@ -31,6 +31,8 @@ COPY --chown=app:app . .
 
 USER app
 
+RUN chmod +x entrypoint.sh  # THIS IS THE CRITICAL LINE
+
 # Application ports
 EXPOSE 8000
 

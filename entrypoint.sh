@@ -13,7 +13,9 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
 #Loading data
+echo "Loading fixtures"
 python manage.py loaddata orders_internal_fixture.json orders_external_fixture.json
+echo "Loaded fixtures"
 
 # Create superuser if credentials are provided
 if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_EMAIL" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ]; then

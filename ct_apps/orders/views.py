@@ -17,7 +17,7 @@ if 'makemigrations' not in sys.argv and 'migrate' not in sys.argv:
 # List view - staff and sales
 class SaleOrdersView(LoginRequiredMixin, View):
     def get(self, request):
-        order_sales = OrderSale.objects.exclude(reference__startswith='internal_')
+        order_sales = OrderSale.objects.exclude(reference__startswith='I')
 
         context = {
             "sale_order": [so for so in order_sales]

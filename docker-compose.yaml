@@ -3,7 +3,7 @@ services:
     build: .
     
     ports:
-      - "80:8000"
+      - "8000:8000"
     
     environment:
       - DEBUG=True
@@ -13,8 +13,8 @@ services:
       - DJANGO_SUPERUSER_PASSWORD=Acpt_2025#
     
 
-    command: python manage.py runserver 0.0.0.0:8000
-#    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
+#    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
   
   #    depends_on: comanda_tech_db
   

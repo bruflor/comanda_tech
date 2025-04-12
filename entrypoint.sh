@@ -14,7 +14,7 @@ python manage.py collectstatic --noinput
 
 #Loading data
 echo "Loading fixtures"
-python manage.py loaddata orders_internal_fixture.json orders_external_fixture.json
+python manage.py loaddata orders_internal_fixture.json orders_external_fixture.json product_fixture.json
 echo "Loaded fixtures"
 
 # Create superuser if credentials are provided

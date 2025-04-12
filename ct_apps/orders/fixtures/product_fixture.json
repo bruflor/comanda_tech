@@ -1,0 +1,249 @@
+[
+  {
+    "model": "orders.product",
+    "pk": 1,
+    "fields": {
+      "name": "Feijoada Adulto",
+      "price": 10.00,
+      "initial_stock": 80,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 2,
+    "fields": {
+      "name": "Feijoada Criança",
+      "price": 5.00,
+      "initial_stock": 40,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 3,
+    "fields": {
+      "name": "Sagres mini",
+      "price": 1.00,
+      "initial_stock": 24,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 4,
+    "fields": {
+      "name": "Sumol laranja Lata",
+      "price": 1.50,
+      "initial_stock": 24,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 5,
+    "fields": {
+      "name": "Seven Up Lata",
+      "price": 1.50,
+      "initial_stock": 24,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 6,
+    "fields": {
+      "name": "Ice tea Lata",
+      "price": 1.50,
+      "initial_stock": 24,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 7,
+    "fields": {
+      "name": "Coca cola Lata",
+      "price": 3.00,
+      "initial_stock": 29,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 8,
+    "fields": {
+      "name": "Coca cola Litro",
+      "price": 1.00,
+      "initial_stock": 12,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 9,
+    "fields": {
+      "name": "Vinho Copo",
+      "price": 0.50,
+      "initial_stock": 40,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 10,
+    "fields": {
+      "name": "Pudim",
+      "price": 2,
+      "initial_stock": 2,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 11,
+    "fields": {
+      "name": "Mousse de maracujá",
+      "price": 2,
+      "initial_stock": 2,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 12,
+    "fields": {
+      "name": "Mousse de chocolate",
+      "price": 2,
+      "initial_stock": 2,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 13,
+    "fields": {
+      "name": "Mousse de prestígio",
+      "price": 2,
+      "initial_stock": 2,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 14,
+    "fields": {
+      "name": "Brigadeiro",
+      "price": 1,
+      "initial_stock": 2,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 15,
+    "fields": {
+      "name": "Bazar - 0.5",
+      "price": 0.5,
+      "initial_stock": 1000,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 16,
+    "fields": {
+      "name": "Bazar - 1",
+      "price": 1,
+      "initial_stock": 1000,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 17,
+    "fields": {
+      "name": "Bazar - 2",
+      "price": 2,
+      "initial_stock": 1000,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 18,
+    "fields": {
+      "name": "Bazar - 5",
+      "price": 5,
+      "initial_stock": 1000,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 19,
+    "fields": {
+      "name": "Água",
+      "price": 0.5,
+      "initial_stock": 12,
+      "sold_unity": 0,
+      "cost_per_unity": null,
+      "is_internal": false,
+      "updated_by": null
+    }
+  }
+]

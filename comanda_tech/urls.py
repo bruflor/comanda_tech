@@ -19,15 +19,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from . import views
-
 urlpatterns = [
                   path('admin/', admin.site.urls),
-
-                  path("", views.home, name='home'),
-
                   path("accounts/", include('django.contrib.auth.urls')),
-
                   path('orders/', include('ct_apps.orders.urls', namespace="orders")),
                   path('accountant/', include('ct_apps.accountant.urls', namespace="accountant")),
+                  path("", include("ct_apps.home.urls", namespace='home')),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_URL)

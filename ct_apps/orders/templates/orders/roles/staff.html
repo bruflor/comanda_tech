@@ -19,7 +19,7 @@
     {% for order in sale_order %}
         <a href="{% url "orders:detail_retrieve" reference=order.reference is_editing=True %}"
            class="card my-3 p-3 text-decoration-none text-reset"
-           style="border-left: 8px solid {% if order.consumer %}#3bb143{% else %}#aaa{% endif %}">
+           style="border-left: 8px solid {% if order.consumer or order.purchased_item.all|length > 0 %}#3bb143{% else %}#aaa{% endif %}">
             {{ order.reference }}
             {% if order.consumer %}
                 {{ order.consumer }}

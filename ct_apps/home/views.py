@@ -19,6 +19,13 @@ class HomeView(View):
             try:
                 order = OrderSale.objects.get(reference__iexact=order_id)
                 context["order"] = order
+                purchased_item = order.purchased_item.all
+
+                context = {
+                    "order_sale": order,
+                    "purchased_items": purchased_item,
+                }
+                
             except ObjectDoesNotExist:
                 pass
 

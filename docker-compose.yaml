@@ -7,7 +7,7 @@ services:
     
     environment:
       - DEBUG=True
-      - ALLOWED_HOSTS=*
+      - ALLOWED_HOSTS=comanda.assocpt.org,localhost,127.0.0.1
       - DJANGO_SUPERUSER_USERNAME=acpt
       - DJANGO_SUPERUSER_EMAIL=acpt@acpt.pt
       - DJANGO_SUPERUSER_PASSWORD=Acpt_2025#

@@ -16,8 +16,8 @@ services:
       - CORS_ALLOWED_ORIGINS=https://comanda.assocpt.org  # Only if using django-cors-headers
     
 
-    command: python manage.py runserver 0.0.0.0:8000
-#    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
+#    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn comanda_tech.wsgi:application --bind 0.0.0.0:8000
   
   #    depends_on: comanda_tech_db
   

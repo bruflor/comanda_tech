@@ -7,7 +7,6 @@
 
 {% block body %}
     {% if order_sale %}
-
         <div class="container-fluid bg-white p-4" style="border-radius:8px; margin-top:5%">
             <h1 class="mb-5">Comanda</h1>
 
@@ -21,17 +20,17 @@
                 <ul style="padding: 0">
                     {% for order in purchased_items %}
                         {% if order.status == "paid" %}
-                        <li class="row mt-3">
-                            <div class="col gap-3">
-                                <div class="card">
-                                    <div class="card-body  d-flex gap-3">
-                                        <p class="mb-0">{{ order.amount }} x</p>
-                                        <p class="mb-0">{{ order.item.name }}</p>
-                                        <p class="mb-0">{{ order.item.price }} $</p>
+                            <li class="row mt-3">
+                                <div class="col gap-3">
+                                    <div class="card">
+                                        <div class="card-body  d-flex gap-3">
+                                            <p class="mb-0">{{ order.amount }} x</p>
+                                            <p class="mb-0">{{ order.item.name }}</p>
+                                            <p class="mb-0">{{ order.item.price }} $</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -59,7 +58,7 @@
         </div>
 
     {% else %}
-        <form action="{% url "home:index" %}" id="search">
+        <form action="{% url "home:index" %}" id="search" class="mt-5">
             <div class="d-grid gap-2 d-md-flex justify-content-md-between">
                 <input class="p-3 w-100" type="text" name="search_order_id" id="search_order_id"
                        placeholder="Digite o número da comanda">
@@ -69,5 +68,32 @@
                 </div>
             </div>
         </form>
+
+        <div class="mt-5">
+            <h2>Ementa</h2>
+        
+            <div class="my-3  p-4 bg-white" style="border-radius:8px;">
+                <table class="w-100">
+                    <tr class="row">
+                        <td class="col-9"><h3>Nome</h3></td>
+                        <td class="col-3"><h3>Preço</h3></td>
+                    </tr>
+
+                    {% for product in products %}
+                        <tr class="row py-3" style="border-bottom:1px solid #ddd;">
+                            <td class="col-9">
+                                <div>{{ product.name }}</div>
+                            </td>
+                            <td class="col-3">
+                                <div>{{ product.price }} €</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     {% endif %}
+
+
+
 {% endblock body %}
